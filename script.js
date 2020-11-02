@@ -1280,10 +1280,12 @@ function musicstart(file,ls,videoid) {
   start()
   target=$("#qarea_next").offset().top-2
   //window.scrollTo(0,target)
+  /*
   if(player != void 0){
     player_play()
     return
   }
+  */
   onYouTubeIframeAPIReady(videoid)
   console.log(window.outerWidth)
 }
