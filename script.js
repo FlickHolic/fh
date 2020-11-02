@@ -1286,6 +1286,7 @@ function musicstart(file,ls,videoid) {
     return
   }
   */
+ console.log(videoid)
   onYouTubeIframeAPIReady(videoid)
   console.log(window.outerWidth)
 }
