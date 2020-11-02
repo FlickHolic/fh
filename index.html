@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+
+<html manifest="flick.appcache">
+
+  <head>
+    <meta charset="utf-8" name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=0,minimal-ui" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="X-UA-Compatible" content="IE=9"> 
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+    <!--
+    <link href='http://fonts.googleapis.com/css?family=Lato:900,400' rel='stylesheet' type='text/css'>
+    -->
+    <link rel="shortcut icon" href="flick2.ico" type="image/vnd.microsoft.icon" />
+    <link rel="apple-touch-icon" href="webapp2.png" />
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="transit.js" type="text/javascript"></script>
+    <script src="score.js" type="text/javascript"></script>
+    <script src="script.js" type="text/javascript"></script>
+    <script src="preloadjs.js" type="text/javascript"></script>
+    <title>FlickHolic</title>
+  </head>
+
+  <body  onload="autoscroll(),loadls_rankscore()">
+    <!--背景画像Div-->
+    <div id="backimg" onclick="topchangetab()">
+      <!--メニューバーDiv-->
+      <div style="display: none;">
+        <ul id="tab">
+          <li class="menubutton select"><a>Home</a></li><li class="menubutton">Flick</li><li class="menubutton">Stage</li><li class="menubutton">Result</li><li class="menubutton">Friend</li><li class="menubutton">Home</li>
+        </ul>
+      </div>
+      <!--0.タイトル画面Div-->
+      <div class="content">
+        <h1>FlickHolic</h1>
+        <br>
+        <div style="text-align: center;">
+          <i id="topicon" class="fa fa-hand-point-up"></i>
+        </div>
+        <h2>TAP TO START</h2>
+        <br>
+      </div>
+    
+      <!--1.フリック画面Div-->
+      <div id="flickdiv" class="flick content disnon" style="height: 100%;">
+        <div id="player"></div>
+        <div id="flickcontents">
+
+          <!--<div id="combo1" class="combo1" style="position: absolute;z-index: 2;"></div>-->
+
+          <div id="qarea_next"></div>
+          <div id="qarea"></div>
+          <div id="qbar_cover">
+            <div id="qbar"></div>
+          </div>
+          <div id="raw_narea" style="display: none;"></div>
+          <div id="narea"></div>
+          <div id="aarea" style="display: none;"></div>
+          <div id="testarea"></div>
+
+          <div id="mozi_time">
+            <ul>
+              <li id="mozi_time1"></li>
+              <li id="mozi_time2"></li>
+              <li id="mozi_time3"></li>
+              <li id="mozi_time4"></li>
+              <li id="mozi_time5"></li>
+              <li id="mozi_time6"></li>
+              <li id="mozi_time7"></li>
+              <li id="mozi_time0"></li>
+            </ul>
+          </div>
+
+          <div id="timingarea">
+            <ul id="timingareaul">
+              <li id="timingstop"></li>
+              <li id="timing_bar0" class="timing_bar"></li>
+              <li id="timing_bar1" class="timing_bar"></li>
+              <li id="timing_bar2" class="timing_bar"></li>
+              <li id="timing_bar3" class="timing_bar"></li>
+              <li id="timing_bar4" class="timing_bar"></li>
+              <li id="timing_bar5" class="timing_bar"></li>
+              <li id="timing_bar6" class="timing_bar"></li>
+              <li id="timing_bar7" class="timing_bar"></li>
+              <li id="timing_bar8" class="timing_bar"></li>
+              <li id="timing_bar9" class="timing_bar"></li>
+              <li id="timing_bar10" class="timing_bar"></li>
+              <li id="timing_bar11" class="timing_bar"></li>
+              <li id="timing_bar12" class="timing_bar"></li>
+              <li id="timing_bar13" class="timing_bar"></li>
+              <li id="timing_bar14" class="timing_bar"></li>
+              <li id="timing_bar15" class="timing_bar"></li>
+              <li id="timing_bar16" class="timing_bar"></li>
+              <li id="timing_bar17" class="timing_bar"></li>
+              <li id="timing_bar18" class="timing_bar"></li>
+              <li id="timing_bar19" class="timing_bar"></li>
+              <li id="timing_bar20" class="timing_bar"></li>
+              <li id="timing_bar21" class="timing_bar"></li>
+              <li id="timing_bar22" class="timing_bar"></li>
+              <li id="timing_bar23" class="timing_bar"></li>
+              <li id="timing_bar24" class="timing_bar"></li>
+              <li id="timing_bar25" class="timing_bar"></li>
+              <li id="timing_bar26" class="timing_bar"></li>
+              <li id="timing_bar27" class="timing_bar"></li>
+              <li id="timing_bar28" class="timing_bar"></li>
+              <li id="timing_bar29" class="timing_bar"></li>
+              <li id="timing_bar30" class="timing_bar"></li>
+              <li id="timing_bar31" class="timing_bar"></li>
+              <li id="timing_bar32" class="timing_bar"></li>
+              <li id="timing_bar33" class="timing_bar"></li>
+              <li id="timing_bar34" class="timing_bar"></li>
+              <li id="timing_bar35" class="timing_bar"></li>
+              <li id="timing_bar36" class="timing_bar"></li>
+              <li id="timing_bar37" class="timing_bar"></li>
+              <li id="timing_bar38" class="timing_bar"></li>
+              <li id="timing_bar39" class="timing_bar"></li>
+              <li id="timing_bar40" class="timing_bar"></li>
+              <li id="timing_bar41" class="timing_bar"></li>
+              <li id="timing_bar42" class="timing_bar"></li>
+              <li id="timing_bar43" class="timing_bar"></li>
+              <li id="timing_bar44" class="timing_bar"></li>
+              <li id="timing_bar45" class="timing_bar"></li>
+              <li id="timing_bar46" class="timing_bar"></li>
+              <li id="timing_bar47" class="timing_bar"></li>
+              <li id="timing_bar48" class="timing_bar"></li>
+              <li id="timing_bar49" class="timing_bar"></li>
+              <li id="timing_bar50" class="timing_bar"></li>
+              <li id="timing_bar51" class="timing_bar"></li>
+              <li id="timing_bar52" class="timing_bar"></li>
+              <li id="timing_bar53" class="timing_bar"></li>
+              <li id="timing_bar54" class="timing_bar"></li>
+              <li id="timing_bar55" class="timing_bar"></li>
+              <li id="timing_bar56" class="timing_bar"></li>
+              <li id="timing_bar57" class="timing_bar"></li>
+              <li id="timing_bar58" class="timing_bar"></li>
+              <li id="timing_bar59" class="timing_bar"></li>
+              <li id="timing_bar60" class="timing_bar"></li>
+              <li id="timing_bar61" class="timing_bar"></li>
+              <li id="timing_bar62" class="timing_bar"></li>
+              <li id="timing_bar63" class="timing_bar"></li>
+              <li id="timing_bar64" class="timing_bar"></li>
+              <li id="timing_bar65" class="timing_bar"></li>
+              <li id="timing_bar66" class="timing_bar"></li>
+              <li id="timing_bar67" class="timing_bar"></li>
+              <li id="timing_bar68" class="timing_bar"></li>
+              <li id="timing_bar69" class="timing_bar"></li>
+              <li id="timing_bar70" class="timing_bar"></li>
+              <li id="timing_bar71" class="timing_bar"></li>
+              <li id="timing_bar72" class="timing_bar"></li>
+              <li id="timing_bar73" class="timing_bar"></li>
+              <li id="timing_bar74" class="timing_bar"></li>
+              <li id="timing_bar75" class="timing_bar"></li>
+              <li id="timing_bar76" class="timing_bar"></li>
+              <li id="timing_bar77" class="timing_bar"></li>
+              <li id="timing_bar78" class="timing_bar"></li>
+              <li id="timing_bar79" class="timing_bar"></li>
+              <li id="timing_bar80" class="timing_bar"></li>
+              <li id="input_bar0" class="timing_bar"></li>
+              <li id="input_bar1" class="timing_bar"></li>
+              <li id="input_bar2" class="timing_bar"></li>
+              <li id="input_bar3" class="timing_bar"></li>
+              <li id="input_bar4" class="timing_bar"></li>
+              <li id="input_bar5" class="timing_bar"></li>
+              <li id="input_bar6" class="timing_bar"></li>
+              <li id="input_bar7" class="timing_bar"></li>
+              <li id="input_bar8" class="timing_bar"></li>
+              <li id="input_bar9" class="timing_bar"></li>
+              <li id="input_bar10" class="timing_bar"></li>
+              <li id="input_bar11" class="timing_bar"></li>
+              <li id="input_bar12" class="timing_bar"></li>
+              <li id="input_bar13" class="timing_bar"></li>
+              <li id="input_bar14" class="timing_bar"></li>
+              <li id="input_bar15" class="timing_bar"></li>
+              <li id="input_bar16" class="timing_bar"></li>
+              <li id="input_bar17" class="timing_bar"></li>
+              <li id="input_bar18" class="timing_bar"></li>
+              <li id="input_bar19" class="timing_bar"></li>
+              <li id="input_bar20" class="timing_bar"></li>
+              <li id="input_bar21" class="timing_bar"></li>
+              <li id="input_bar22" class="timing_bar"></li>
+              <li id="input_bar23" class="timing_bar"></li>
+              <li id="input_bar24" class="timing_bar"></li>
+              <li id="input_bar25" class="timing_bar"></li>
+              <li id="input_bar26" class="timing_bar"></li>
+              <li id="input_bar27" class="timing_bar"></li>
+              <li id="input_bar28" class="timing_bar"></li>
+              <li id="input_bar29" class="timing_bar"></li>
+              <li id="input_bar30" class="timing_bar"></li>
+              <li id="input_bar31" class="timing_bar"></li>
+              <li id="input_bar32" class="timing_bar"></li>
+              <li id="input_bar33" class="timing_bar"></li>
+              <li id="input_bar34" class="timing_bar"></li>
+              <li id="input_bar35" class="timing_bar"></li>
+              <li id="input_bar36" class="timing_bar"></li>
+              <li id="input_bar37" class="timing_bar"></li>
+              <li id="input_bar38" class="timing_bar"></li>
+              <li id="input_bar39" class="timing_bar"></li>
+              <li id="input_bar40" class="timing_bar"></li>
+
+              <li id="comboarea1" style="white-space: nowrap;"></li>
+              <!--FIXBARの左端のはみ出しを上書きするためのLi-->
+              <li style="position: absolute;background-color: #D7EEFF;width: 3px;height:29px;left: -3px;border-right:1px solid #ccc;z-index: 10"> </li>
+              <li id="fixbar_cover"></li><li id="fixbar"></li></li>
+            </ul>
+          </div>
+          <div id="comboarea">
+            <ul></ul>
+          </div>
+          <div id="flicktable">
+            <div id="flicktable_str">
+              <ul>
+                <li id="a" class="button">あ</li><li id="k" class="button">か</li><li id="s" class="button">さ</li></ul>
+              <ul>
+                <li id="t" class="button">た</li><li id="n" class="button">な</li><li id="h" class="button">は</li></ul>
+              <ul>
+                <li id="m" class="button">ま</li><li id="y" class="button">や</li><li id="r" class="button">ら</li></ul>
+            </div>
+            <div id="flicktable_rhy" style="display:none;">
+              <ul>
+                <li id="rhy_li" class="button">♪</li>
+              </ul>
+            </div>
+              <ul>
+                <li class="pause"><i id="pause" class="fa fa-pause"></i></li><li id="w" class="button">わ</li><li id="w2" class="button" style="display:none;">-</li><li style="position: relative;z-index: 1;"><div id="combo1" style="position: absolute;z-index: 2;"></div><a id="ten"></a>/<a id="max_ten"></a><div id="ten2" style="position: absolute;z-index: 3;"></div></li>
+              </ul>
+          </div>
+
+          <div id="volumebutton">
+            <ul><li id="volumeoff"><i class="fa fa-volume-off"></i></li><li id="volumedown"><i class="fa fa-volume-down"></i></li><li id="volumeup"><i class="fa fa-volume-up"></i></li></ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!--2.曲選択Div-->
+    <div class="content disnon">
+      <h2>STAGE SELECT</h2>
+      <!--動的に生成したaudioタグだと.onのtimeupdateが反応してくれないのでかっこ悪いけどあらかじめ作っておく>動的に生成したくなったらどうすれば...-->
+      <div id="music_area" style="display: none;">
+        <audio id="se_click" preload>
+          <source src="click3.mp3" type="audio/mp3">
+        </audio>
+        <audio id="se_miss" preload>
+          <source src="miss.mp3" type="audio/mp3">
+        </audio>
+        <audio id="se_click" style="display: none;" class="music"></audio>
+        <audio id="se_miss" style="display: none;" class="music"></audio>
+        <audio id="music_sabisiiookami" style="display: none;" class="music"></audio>
+        <audio id="music_sorairoradio" style="display: none;" class="music"></audio>
+        <audio id="music_suzumeirocondensare" style="display: none;" class="music"></audio>
+        <audio id="music_quiet" style="display: none;" class="music"></audio>
+        <audio id="music_imaginativejourney" style="display: none;" class="music"></audio>
+        <audio id="music_setunacycle" style="display: none;" class="music"></audio>
+        <audio id="music_syariraimon" style="display: none;" class="music"></audio>
+        <audio id="music_beatinangel" style="display: none;" class="music"></audio>
+      </div>
+      <div id="stagetable" class="stage">
+        <!--
+        <ul>
+          <li><a>Clear</a></li><li><a>難易度</a></li><li><a>タイトル</a></li><li><a>歌</a></li><li><a>ランク</a></li><li><a>ハイスコア</a></li>
+          </ul>
+        -->
+        <ul onclick="musicstart('shiningstar','shiningstar','Qd01-6xVSHk')" style="background-image: url('');background-size:cover;background-position: center center;background-repeat: no-repeat;">
+          <li><a></a><i id="starshiningstar"></i></li><li style="width: 70%;"><a><i class="fa fa-music"></i>シャイニングスター</a><a>魔王魂</a></li><li style="width: 20%;"><a id="highrankshiningstar">-</a><a id="highscoreshiningstar">-</a></li>
+          </ul>
+        <ul onclick="musicstart('ichinenniichidonoichigofestival','ichinenniichidonoichigofestival','gqw8efOS6NE')" style="background-image: url('');background-size:cover;background-position: center center;background-repeat: no-repeat;">
+          <li><a></a><i id="ichinenniichidonoichigofestival"></i></li><li style="width: 70%;"><a><i class="fa fa-music"></i>一年に一度のいちごふぇすてぃばる</a><a>龍崎一</a></li><li style="width: 20%;"><a id="highrankichinenniichidonoichigofestival">-</a><a id="highscoreichinenniichidonoichigofestival">-</a></li>
+          </ul>
+        
+        <h2>MUSIC</h2>
+        <ul><li style="height: 44px;text-align: center;"><a onclick="changetab(4)"><i class="fa fa-th"></i> 使用楽曲一覧</a></li></ul>
+        
+        <br>
+        <h2 onclick="playSound()">CONFIG</h2>
+        <ul><li style="height: 44px;text-align: center;"><a onclick="changetab(5)"><i class="fa fa-cog"></i> コンフィグ</a></li></ul>
+        <br>
+
+        <h2>MOJI PANEL</h2>
+        <div align="center">
+          <label><input type="radio" name="mojiflag" value="none">NONE</label>
+          <label><input type="radio" name="mojiflag" value="panel" checked>PANEL</label>
+        </div>
+        <h2>TIMING BAR</h2>
+        <!--
+        <div align="center"><input type="checkbox" id="timingflag"></div>
+        -->
+        <div align="center">
+          <label><input type="radio" name="timingflag" value="none">NONE</label>
+          <label><input type="radio" name="timingflag" value="slot">SLOT</label>
+          <label><input type="radio" name="timingflag" value="fix" checked>FIX</label>
+          <label><input type="radio" name="timingflag" value="bar">BAR</label>
+        </div>
+        <h2>SHORTCUT MODE</h2>
+        <div align="center"><input type="checkbox" id="shortcut" checked></div>
+        <h2>DEBUG MODE</h2>
+        <div align="center"><input type="checkbox" id="debug" ></div>
+        <h2>AUTOPLAY MODE</h2>
+        <div align="center"><input type="checkbox" id="autoplay" ></div>
+
+        <br>
+        <!-- 未完成のエディット画面移行ボタン
+        <ul><li onclick="editstart()">edit mode</li></ul>
+        -->
+        
+        
+        <br><br>
+        <div align="center"><input type="button" onclick="if(confirm('スコアを削除してよろしいですか？')==true){localStorage.clear()}" value="スコア消去" ></div>
+        <br><br>
+        <div align="center"><img src="qr.gif" alt="QR"></div>
+      </div>
+    </div>
+
+    <!--3.ResultDiv-->
+    <div class="content disnon">
+      <div id="resulttable">
+        <ul><li id="result1"></li>
+          </ul>
+        <ul><li id="result2"></li><li id="result3"></li><li id="result5"></li>
+          </ul>
+        <ul><li id="result4"></li>
+          </ul>
+        <ul><li id="result10"></li>
+          </ul>
+        <br>
+        <h2 id="hiddenplay" style="text-align: left;border: 1px solid gray;margin: 2px;background-color: rgba(255, 255, 255, 0.9);" onclick="player.pauseVideo();player.seekTo(0,true);musicstart(playagain1,playagain2,playagain3)"><i class="fa fa-undo"></i> PLAY AGAIN</h2>
+        <br>
+        <h2 style="text-align: left;border: 1px solid gray;margin: 2px;background-color: rgba(255, 255, 255, 0.9);" onclick="changetab(2);player.pauseVideo();player.seekTo(0,true);"><i class="fa fa-list-ul"></i> BACK TO STAGE SELECT</h2>
+        <br>
+      </div>
+    </div>
+
+    <!--4.CreditDiv-->
+    <div class="content disnon">
+      <h2>MUSIC</h2>
+      <i class="fa fa-music"></i> title
+      <br>
+      音楽：music
+      絵：movie
+      <br>
+      R
+      <br>
+      <a href="https://www.google.com/">https://www.google.com/</a>
+      <br>
+
+      <i class="fa fa-music"></i> title
+      <br>
+      音楽：music
+      絵：movie
+      <br>
+      R
+      <br>
+      <a href="https://www.google.com/">https://www.google.com/</a>
+      <br>
+
+      <h2 onclick="changetab(2)" style="text-align: center;border: 1px solid gray;margin: 2px;background-color: rgba(255, 255, 255, 0.9);"><i class="fa fa-list-ul"></i> BACK</h2>
+      <br>
+    </div>
+
+    <!--5.EditDiv-->
+    <!--6.ConfigDiv-->
+    <div class="content disnon">
+      <h2>CONFIG</h2>
+      
+
+      <br>
+      <h2 onclick="changetab(2)" style="text-align: center;border: 1px solid gray;margin: 2px;background-color: rgba(255, 255, 255, 0.9);"><i class="fa fa-list-ul"></i> BACK</h2>
+      <br>
+    </div>     
+      <!--
+      <div class="content disnon">
+        <input type="url" id="editurl" style="width: 100%;" placeholder="楽曲URLを入力（wav,aac,ogg）">
+        <input type="button" value="play" onclick="editplay()" style="width: 100%;">
+        <input type="button" value="reset" onclick="editreset()" style="width: 100%;">
+        <audio id="edit" controls></audio>
+        <input type="button" value="input" onclick="editinput()" style="width: 100%;">
+        
+        <input type="button" value="create" onclick="editcreate()" style="width: 100%;">
+        <textarea id="editkasi" style="width: 45%;" placeholder="歌詞（表示）を入力"></textarea>
+        <textarea id="editkasi_n" style="width: 45%;" placeholder="歌詞（入力）を入力"></textarea>
+        <textarea id="editresult" placeholder="歌詞セット出力結果"></textarea>
+        <a id="edittime"></a>
+      </div>
+      -->
+    </div>
+    </body>
+</html>

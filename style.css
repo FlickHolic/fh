@@ -1,0 +1,860 @@
+/*
+Copyright (c) 2009, Yahoo! Inc. All rights reserved.
+Code licensed under the BSD License:
+http://developer.yahoo.net/yui/license.txt
+version: 3.0.0
+build: 1549
+*/
+html{
+  color:#000;background:#FFF;
+}
+/*全てにborder-boxを適用*/
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,
+pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{
+  margin:0;
+  padding:0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/*tableの隣接するセルは重ねて表示する*/
+table{
+  border-collapse:collapse;border-spacing:0;
+}
+fieldset,img{
+ border:0;
+}
+/*
+address,caption,cite,code,dfn,em,strong,th,var{
+  font-style:normal;
+  font-weight:normal;
+}
+*/
+li{
+  list-style:none;
+}
+/*
+caption{
+  text-align:left;
+}
+*/
+/*
+h1,h2,h3,h4,h5,h6{
+  font-size:100%;font-weight:normal;
+}
+*/
+/*
+q:before,q:after{ content:''; }
+abbr,acronym{ border:0;font-variant:normal; }
+sup{ vertical-align:text-top; }
+sub{ vertical-align:text-bottom; }
+input,textarea,select{ font-family:inherit;font-size:inherit;font-weight:inherit; }
+input,textarea,select{ *font-size:100%; }
+input,textarea,select{ vertical-align: middle; }
+legend{ color:#000; }
+*/
+
+/*全てにborder-boxを適用*/
+/*
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+}
+*/
+
+
+
+
+/*SNSの埋め込みを中央に揃えるコード*/
+.video-container, 
+.instagram-container, 
+.facebook-container,
+.twitter-tweet,
+.instagram-media {
+    margin: 30px auto !important;
+}
+
+#flickdiv {
+  position: relative;
+  height: 100%;
+
+}
+
+#flickcontents {
+  /*position: absolute;*/
+  top: 0;
+  /*
+  left: 50%;
+  transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+  */
+  height: 100%;
+  width:100%;
+  background-color: rgba(255, 255, 255, 0.8); 
+}
+
+#flicktable {
+/*要素クリック時のハイライトを透明にする*/
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
+  user-select: none; /* CSS3 */
+  -moz-user-select: none; /* Firefox */
+  -webkit-user-select: none; /* Safari、Chrome */
+  -ms-user-select: none; /* IE10 */
+}
+
+
+
+html {
+  height: 100%;
+  /*background: rgb(195,217,255);*/
+  background: #D7EEFF;
+}
+
+/*bodyの余白を設定*/
+body {
+  height: 100%;
+  margin: 0px;
+  padding: 2px;
+  border: 0;
+}
+
+#backimg {
+  background: #D7EEFF;
+  /*
+  background: rgb(195,217,255);
+  background: -moz-linear-gradient(top,  rgba(195,217,255,1) 0%, rgba(177,200,239,1) 41%, rgba(152,176,217,1) 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(195,217,255,1)), color-stop(41%,rgba(177,200,239,1)), color-stop(100%,rgba(152,176,217,1)));
+  background: -webkit-linear-gradient(top,  rgba(195,217,255,1) 0%,rgba(177,200,239,1) 41%,rgba(152,176,217,1) 100%);
+  background: -o-linear-gradient(top,  rgba(195,217,255,1) 0%,rgba(177,200,239,1) 41%,rgba(152,176,217,1) 100%);
+  background: -ms-linear-gradient(top,  rgba(195,217,255,1) 0%,rgba(177,200,239,1) 41%,rgba(152,176,217,1) 100%);
+  background: linear-gradient(to bottom,  rgba(195,217,255,1) 0%,rgba(177,200,239,1) 41%,rgba(152,176,217,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c3d9ff', endColorstr='#98b0d9',GradientType=0 );
+  background-image: url(bg.jpg);
+  */
+  background-size:auto 100%;
+  background-position: center center; 
+  background-repeat: no-repeat;
+}
+
+span {
+  position:absolute;
+  bottom:0px;
+  text-align:right;
+}
+
+/*すべてのselect要素の設定
+select {
+  border-top: 1px solid #999;
+  border-right: 1px solid #999;
+  border-bottom: 1px solid #999;
+  border-left: 1px solid #999;
+  padding: 0px,0px,0px,5px;
+  margin: 0px;
+  vertical-align:middle;
+  font-size: small;
+  -webkit-appearance: none;
+  border-radius: 0;
+  height: 30px;
+  width: 100%;
+}
+*/
+
+input {
+  height: 30px;
+}
+
+/*すべてのinput text要素の設定
+input[type="text"]{
+  border-top: 1px solid #999;
+  border-right: 1px solid #999;
+  border-bottom: 1px solid #999;
+  border-left: 1px solid #999;
+  padding:0px;
+  margin:0px;
+  display:inline;
+  vertical-align:middle;
+  text-align:center;
+  border-radius: 0;
+  height: 56px;
+  background-size: 54px;
+}
+*/
+
+/*すべてのinput check要素の設定*/
+input[type="checkbox"]{
+  -webkit-appearance: checkbox;
+  height: 25px;
+  width: 100%;
+}
+
+input[type="tel"],input[type="text"]{
+  border-top: 1px solid #999;
+  border-right: 1px solid #999;
+  border-bottom: 1px solid #999;
+  border-left: 1px solid #999;
+  padding:0px;
+  margin:0px;
+  display:inline;
+  vertical-align:middle;
+  text-align:center;
+  border-radius: 0;
+  width: 100%;
+}
+
+input[type="button"]{
+  border-top: 1px solid #999;
+  border-right: 1px solid #999;
+  border-bottom: 1px solid #999;
+  border-left: 1px solid #999;
+  text-align: center;
+  cursor: pointer;
+  color: #666;
+  border-radius: 0;
+  background: -moz-linear-gradient(top, #fff, #F1F1F1 1%, #F1F1F1 50%, #DFDFDF 99%, #ccc);  
+  background: -webkit-gradient(linear, left top, left bottom, from(#fff), color-stop(0.01, #F1F1F1), color-stop(0.5, #F1F1F1), color-stop(0.99, #DFDFDF), to(#ccc));
+  padding: 0 10px 0 10px;
+}
+
+/*h1 { font-family: ‘Metrophobic’, Arial, serif; font-weight:700;font-size:26px;width: 316px;border-left:20px solid #BD8CBC;padding:0px 0px 0px 2px;}*/
+h1 { font-family: ‘Lato’, sans-serif;font-weight:900;font-size:50px;text-align: center;color: #34495E;padding: 10px 10px 10px 10px;}
+h2,#resulttable { font-family: ‘Lato’, sans-serif;font-weight:900;font-size:15px;text-align: center;color: #34495E;padding: 10px 10px 10px 10px;}
+/*
+.memo { font-family: ‘Metrophobic’, Arial, serif; font-weight:700;font-size:14px;border-left:14px solid #BD8CBC;padding:0px 0px 0px 2px;}
+.font { font-family: ‘Metrophobic’, Arial, serif; font-weight:400;font-size:18px;}
+*/
+label {
+  font-family: ‘Lato’, sans-serif;font-weight:900;font-size:15px;text-align: center;color: #34495E;padding: 10px 10px 10px 10px;
+}
+/*フリックキーボードのデザイン*/
+#flicktable ul {
+  padding: 0 91px 0 91px;
+  text-align: center;
+}
+#flicktable li {
+  display: inline-block;
+  width: 90px;
+  height: 90px;
+  line-height: 90px;
+  text-align: center;
+  border: 1px solid gray;  
+  margin: 2px;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+/*フリックリズムのデザイン*/
+#flicktable_rhy ul {
+  padding: 0 91px 0 91px;
+  text-align: center;
+}
+#flicktable_rhy li {
+  display: inline-block;
+  width: 278px;
+  height: 278px;
+  line-height: 273px;
+  text-align: center;
+  border: 1px solid gray;  
+  margin: 2px;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+#volumebutton ul {
+  padding: 10px 0 0 0;
+  text-align: right;
+}
+#volumebutton li {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  border: 1px solid gray;  
+  margin: 2px;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+#stagetable ul {
+  display: table;
+  table-layout: fixed;
+  width:100%;
+  text-align: center;
+  margin-bottom: -1px;
+}
+
+#stagetable li {  
+  display: inline-block;
+  display: table-cell;
+  text-align: center;
+  border-right: 1px solid gray;
+  border-left: 1px solid gray;
+  border-top: 1px solid gray;
+  border-bottom: 1px solid gray;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+#stagetable ul :nth-of-type(2) {
+  border-right:0px;
+  border-left:0px; 
+}
+
+#stagetable a {  
+  display: block;
+}
+
+#tab {
+  padding: 0 0 0 0;
+  text-align: center;
+}
+
+.menubutton {
+  font-family: ‘Lato’, sans-serif;font-weight:400;font-size: 16px;
+  display: inline-block;
+  width: 48px;
+  height: 42px;
+  line-height: 42px;
+  text-align: center;
+  border: 1px solid gray;  
+  margin: 2px;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+a {
+  width: 100%;
+  height: 100%;
+}
+
+#qarea_next {
+  width: 100%;
+  height: 30px;
+  border-top: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #999;
+}
+
+#qarea {
+  width: 100%;
+  height: 30px;
+  border: 1px solid #ccc;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+#narea {
+  width: 100%;
+  height: 50px;
+  border: 1px solid #ccc;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+#narea:first-letter {
+  font-size: 200%;
+}
+
+#aarea {
+  width: 100%;
+  height: 38px;
+  border: 1px solid #ccc;
+}
+
+.select {
+  background: yellow;
+}
+.disnon {
+  display: none;
+}
+
+#qbar {
+  width: 100%;
+  height: 5px;
+}
+
+#mozi_time ul {
+  display: table;
+  table-layout: fixed;
+  border-collapse: collapse;
+  width:100%;
+  text-align: center;
+}
+
+#mozi_time li {  
+  display: inline-block;
+  display: table-cell;
+  text-align: center;
+  border-right: 1px solid #ccc; 
+  border-left: 1px solid #ccc; 
+  border-bottom: 1px solid #ccc; 
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+#mozi_time1,#mozi_time2,#mozi_time3,#mozi_time4,#mozi_time5,#mozi_time6,#mozi_time7,#mozi_time0 {
+  width: 100%;
+  height: 5px;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.raw_bar {
+  width: 100%;
+  height: 5px;
+}
+
+.bar {
+width: 100%;
+height: 5px;
+-moz-animation: anime1 5s linear;
+-webkit-animation: anime1 5s linear;
+animation: anime1 5s linear;
+}
+
+/*
+@media screen and (min-width:520px){
+  #flicktable ul {
+   padding: 0 81px 0 81px;
+   text-align: center;
+  }
+
+  #flicktable li {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+    line-height: 80px;
+    text-align: center;
+    border: 1px solid gray;  
+    margin: 2px;
+    background-color: rgba(255, 255, 255, 0.9);
+  }
+  #combo1 {
+    top: -20px;
+    width: 80px;
+  }
+  #ten2 {
+    top: 20px;
+    width: 80px;
+  }
+}
+*/
+
+@media screen and (max-width:480px) {
+  html {
+    height: 480px;
+  }
+  span {
+    top: 400px;
+  }
+  table {
+    width: 316px;
+  }
+  input[type="text"] {
+    height: 42px;
+    background-size: 40px;
+  }
+/*フリックキーボードのデザイン*/
+  #flicktable ul {
+    padding: 0 61px 0 61px;
+    text-align: center;
+  }
+  #flicktable li {
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    border: 1px solid gray;  
+    margin: 2px;
+    background-color: rgba(255, 255, 255, 0.9);
+  }
+  /*フリックリズムのデザイン*/
+  #flicktable_rhy ul {
+    padding: 0 61px 0 61px;
+    text-align: center;
+  }
+  #flicktable_rhy li {
+    display: inline-block;
+    width: 188px;
+    height: 188px;
+    line-height: 188px;
+    text-align: center;
+    border: 1px solid gray;  
+    margin: 2px;
+    background-color: rgba(255, 255, 255, 0.9);
+  }
+}
+
+@-moz-keyframes test2 {
+	0%	{ color:black;background-color: rgba(255, 255, 255, 0.9);}
+	100%	{ color:blue;background-color: rgba(255, 255, 255, 0.4);}
+}
+
+@-webkit-keyframes test2 {
+	0%	{ color:black;background-color: rgba(255, 255, 255, 0.9);}
+	100%	{ color:blue;background-color: rgba(255, 255, 255, 0.4);}
+}
+
+@keyframes test2 {
+	0%	{ color:black;background-color: rgba(255, 255, 255, 0.9);}
+	100%	{ color:blue;background-color: rgba(255, 255, 255, 0.4);}
+}
+
+@-moz-keyframes anime1 {
+	0%	{ width: 100%; background-color: green;}
+  70%	{ background-color: green;}
+	100%	{ width: 0px; background-color: green;}
+}
+
+@-webkit-keyframes anime1 {
+	0%	{ -webkit-transform-origin: 0 0;-webkit-transform: scaleX(1); background-color: green;}
+  70%	{ background-color: green;}
+	100%	{ -webkit-transform-origin: 0 0;-webkit-transform: scaleX(0); background-color: green;}
+}
+
+@keyframes anime1 {
+	0%	{ width: 100%; background-color: green;}
+  70%	{ background-color: green;}
+	100%	{ width: 0px; background-color: green;}
+}
+@-moz-keyframes anime2 {
+	0%	{ background-color: red;}
+	100%	{ background-color: white;}
+}
+
+@-webkit-keyframes anime2 {
+	0%	{ background-color: red;}
+	100%	{ background-color: white;}
+}
+
+@keyframes anime2 {
+	0%	{ background-color: red;}
+	100%	{ background-color: white;}
+}
+@-moz-keyframes anime3 {
+	0%	{ background-color: blue;}
+	100%	{ background-color: white;}
+}
+
+@-webkit-keyframes anime3 {
+	0%	{ background-color: blue;}
+	100%	{ background-color: white;}
+}
+
+@keyframes anime3 {
+	0%	{ background-color: blue;}
+	100%	{ background-color: white;}
+}
+@-moz-keyframes anime4 {
+	0%	{ background-color: gray;}
+	100%	{ background-color: white;}
+}
+
+@-webkit-keyframes anime4 {
+	0%	{ background-color: gray;}
+	100%	{ background-color: white;}
+}
+
+@keyframes anime4 {
+	0%	{ background-color: gray;}
+	100%	{ background-color: white;}
+}
+@-moz-keyframes anime5 {
+	0%	{ background-color: purple;}
+	100%	{ background-color: white;}
+}
+
+@-webkit-keyframes anime5 {
+	0%	{ background-color: purple;}
+	100%	{ background-color: white;}
+}
+
+@keyframes anime5 {
+	0%	{ background-color: purple;}
+	100%	{ background-color: white;}
+}
+@-moz-keyframes anime12 {
+	0%	{ border: 1px solid blue;
+        background-color: rgba(224, 255, 255, 0.9);
+}
+	100%	{ border: 1px solid #ccc;
+        background-color: rgba(224, 255, 255, 0.9);
+}
+}
+
+@-webkit-keyframes anime12 {
+	0%	{ border: 1px solid blue;
+        background-color: rgba(224, 255, 255, 0.9);
+}
+	100%	{ border: 1px solid #ccc;
+        background-color: rgba(224, 255, 255, 0.9);
+}
+}
+
+@keyframes anime12 {
+	0%	{ border: 1px solid blue;
+        background-color: rgba(224, 255, 255, 0.9);
+}
+	100%	{ border: 1px solid #ccc;
+        background-color: rgba(224, 255, 255, 0.9);
+}
+}
+@-moz-keyframes anime13 {
+	0%	{ color: blue;}
+	50%	{ font-size: larger;}
+	100%	{ font-size: smaller;}
+}
+@-webkit-keyframes anime13 {
+	0%	{ color: blue;}
+	50%	{ font-size: larger;}
+	100%	{ font-size: smaller;}
+}
+@keyframes anime13 {
+	0%	{ color: blue;}
+	50%	{ font-size: larger;}
+	100%	{ font-size: smaller;}
+}
+@-moz-keyframes anime10 {
+	0%	{ border: 1px solid green;}
+	100%	{ border: 1px solid #ccc;}
+}
+
+@-webkit-keyframes anime10 {
+	0%	{ border: 1px solid green;}
+	100%	{ border: 1px solid #ccc;}
+}
+
+@keyframes anime10 {
+	0%	{ border: 1px solid green;}
+	100%	{ background-color: white;}
+}
+
+@-moz-keyframes anime11 {
+	0%	{ background-color: purple;}
+	100%	{ background-color: white;}
+}
+
+@-webkit-keyframes anime11 {
+	0%	{ background-color: purple;}
+	100%	{ background-color: white;}
+}
+
+@keyframes anime11 {
+	0%	{ background-color: purple;}
+	100%	{ background-color: white;}
+}
+
+#topicon {
+  font-size: 60px;
+  text-align: center;
+  color: #34495E;
+  padding: 20px 0 0 0;
+}
+h2{
+  -moz-animation: topicon 1s ease  infinite alternate;
+  -webkit-animation: topicon 1s ease  infinite alternate;
+  -o-animation: topicon 1s ease  infinite alternate;
+  -ms-animation: topicon 1s ease  infinite alternate;
+}
+@-moz-keyframes topicon {
+	0%	{ opacity: 0.7 }
+	100%	{ }
+}
+
+@-webkit-keyframes topicon {
+	0%	{ opacity: 0.7 }
+	100%	{ }
+}
+
+@keyframes topicon {
+	0%	{ opacity: 0.7 }
+	100%	{ }
+}
+
+
+#combo1{
+  font-family: ‘Lato’, sans-serif;font-weight:900;
+  font-size: smaller;
+  top: -20px;
+  width: 60px;
+  text-align: center;
+-moz-animation: comboanime1 0.5s linear infinite alternate;
+-webkit-animation: comboanime1 0.5s linear infinite alternate;
+animation: comboanime1 0.5s linear infinite alternate;
+text-shadow: 0px 0px 6px rgba(255,255,255,0.7);
+}
+#ten2{
+  font-family: ‘Lato’, sans-serif;font-weight:900;
+  font-size: smaller;
+  top: 20px;
+  width: 60px;
+  text-align: center;
+-moz-animation: comboanime1 0.5s linear infinite alternate;
+-webkit-animation: comboanime1 0.5s linear infinite alternate;
+animation: comboanime1 0.5s linear infinite alternate;
+text-shadow: 0px 0px 6px rgba(255,255,255,0.7);
+}
+
+
+@-moz-keyframes comboanime1 {
+	0%	{  }
+	100%	{ opacity: 0.8; }
+}
+
+@-webkit-keyframes comboanime1 {
+	0%	{  }
+	100%	{ opacity: 0.8; }
+}
+
+@keyframes comboanime1 {
+	0%	{  }
+	100%	{ opacity: 0.8; }
+}
+
+
+
+
+#timingarea {
+  position: relative;
+  width: 100%;
+  height: 30px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-right: 1px solid #ccc; 
+  border-left: 1px solid #ccc; 
+  border-bottom: 1px solid #ccc; 
+  -moz-transform: translate3d(0,0,0);
+  -webkit-transform: translate3d(0,0,0);
+}
+
+#comboarea1 {
+  position: absolute;
+  right: 50%;
+  height: 30px;
+  width: 100px;
+  margin-right: -50px;
+  /*border: 1px solid #ccc;
+  background-color: rgba(255, 255, 255, 0.9);*/
+  text-align: center;
+  line-height: 30px;
+  font-family: ‘Lato’, sans-serif;
+  font-weight: 400;
+  text-shadow: 0px 0px 6px rgba(0,0,0,0.2);
+}
+
+#fixbar {
+  border-right: 5px solid blue;
+  /*margin-right: 5px;*/
+  /*padding:5px;*/
+  /*left:5px;*/
+  position: absolute;
+  width: 100%;
+  height: 29px;  
+  /*border: 1px solid #ccc;
+  background-color: rgba(255, 255, 255, 0.9);*/
+}
+
+/*translateで左に100%移動させているのでバーに色をつけると画面端にずっと色が残る ダサい*/
+@-moz-keyframes fixbar_anime1 {
+	0%	{ border-right: 5px solid blue; background-color: rgba(0,255,0,0.1); }
+	90%	{ border-right: 5px solid blue; background-color: rgba(0,255,0,0.1); }
+  100% {
+    -moz-transform: translate(-100%,0px); background-color: rgba(0,255,0,0.1); 
+    border-right: 5px solid blue;
+  }
+}
+
+@-webkit-keyframes fixbar_anime1 {
+	0%	{ border-right: 5px solid blue; background-color: rgba(0,255,0,0.1); }
+	90%	{ border-right: 5px solid blue; background-color: rgba(0,255,0,0.1); }
+  100% {
+    -webkit-transform: translate(-100%,0px); background-color: rgba(0,255,0,0.1);
+    border-right: 5px solid blue;
+  }
+}
+
+@keyframes fixbar_anime1 {
+	0%	{ border-right: 5px solid blue; background-color: rgba(0,255,0,0.1); }
+	90%	{ border-right: 5px solid blue;  }
+  100% {
+    transform: translate(-100%,0px);
+    border-right: 5px solid blue;
+  }
+}
+#timingstop {
+  position: absolute;
+  height: 29px;
+  right: 90%;
+  width: 0px;
+  background-color: rgba(255, 0, 0, 0.8);
+  border-left: 0px solid red; 
+  border-right: 5px solid red; 
+}
+
+.timing_bar {  
+  position: absolute;
+  right: 0px;
+  width: 100%;
+  height: 29px;
+  border-right: 0px solid green; 
+  -moz-transform-style: preserve-3d;
+  -moz-transform:translate3d(0,0,0);
+  -webkit-transform-style: preserve-3d;
+  -webkit-transform:translate3d(0,0,0);
+  transform-style: preserve-3d;
+  transform:translate3d(0,0,0);
+}
+
+@-moz-keyframes timing1 {
+	0%	{ border-right: 5px solid green;  }
+	90%	{ border-right: 5px solid green;  }
+	100%	{ -moz-transform: translate(-90%,0px);border-right: 5px solid blue;
+          -webkit-transform: translate(-90%,0px);border-right: 5px solid blue;
+          transform: translate(-90%,0px);border-right: 5px solid blue;
+}
+}
+
+@-webkit-keyframes timing1 {
+	0%	{ border-right: 5px solid green;  }
+	90%	{ border-right: 5px solid green;  }
+	100%	{ -moz-transform: translate(-90%,0px);border-right: 5px solid blue;
+          -webkit-transform: translate(-90%,0px);border-right: 5px solid blue;
+          transform: translate(-90%,0px);border-right: 5px solid blue;
+}
+}
+
+@keyframes timing1 {
+	0%	{ border-right: 5px solid green;  }
+	90%	{ border-right: 5px solid green;  }
+	100%	{ -moz-transform: translate(-90%,0px);border-right: 5px solid blue;
+          -webkit-transform: translate(-90%,0px);border-right: 5px solid blue;
+          transform: translate(-90%,0px);border-right: 5px solid blue;
+}
+}
+
+@-moz-keyframes timing1_1 {
+	0%	{ border-right: 5px solid black;  }
+	90%	{ border-right: 5px solid black;  }
+	100%	{ -moz-transform: translate(-90%,0px);border-right: 5px solid blue;
+          -webkit-transform: translate(-90%,0px);border-right: 5px solid blue;
+          transform: translate(-90%,0px);border-right: 5px solid blue;
+}
+}
+
+@-webkit-keyframes timing1_1 {
+	0%	{ border-right: 5px solid black;  }
+	90%	{ border-right: 5px solid black;  }
+	100%	{ -moz-transform: translate(-90%,0px);border-right: 5px solid blue;
+          -webkit-transform: translate(-90%,0px);border-right: 5px solid blue;
+          transform: translate(-90%,0px);border-right: 5px solid blue;
+}
+}
+
+@keyframes timing1_1 {
+	0%	{ border-right: 5px solid black;  }
+	90%	{ border-right: 5px solid black;  }
+	100%	{ -moz-transform: translate(-90%,0px);border-right: 5px solid blue;
+          -webkit-transform: translate(-90%,0px);border-right: 5px solid blue;
+          transform: translate(-90%,0px);border-right: 5px solid blue;
+}
+}
