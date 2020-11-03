@@ -283,7 +283,6 @@ var startDate
 $(function(){
   $('#flickdiv').on({ 'touchstart': function (e) { e.preventDefault(); } })
   $('.pause').on({ 'touchstart mousedown': function () { stopcheck(); } })
-  $('#ten').on({ 'touchstart mousedown': function () { consloe.log(player.getCurrentTime()); } })
   
   $('.button').on({'touchstart mousedown': function(e) {
     e.preventDefault();
@@ -1041,6 +1040,7 @@ function onYouTubeIframeAPIReady(videoid) {
   if(videoid == void 0){
     return
   }
+  console.log("onYouTubeIframeAPIReady, start")
   player = new YT.Player('player', {
     playerVars: {
       'origin': location.protocol + '//' + location.hostname + "/",
@@ -1061,34 +1061,25 @@ function onYouTubeIframeAPIReady(videoid) {
       'onError': onPlayerError
     }
   });
+  //console.log(player.getPlayerState() + ",onYouTubeIframeAPIReady()")
   console.log(location.protocol + location.hostname)
-  console.log($("#player").width() + "," + $("#player").height())
-  console.log("w iW" + window.innerWidth + ", w iH" + window.innerHeight)
+  //console.log($("#player").width() + "," + $("#player").height())
+  //console.log("w iW" + window.innerWidth + ", w iH" + window.innerHeight)
 }
 
 function onPlayerError(event) {
-
   $("#flickcontents").hide()
 }
 
 function onPlayerReady(event) {
   player_play()
-
 }
 
 function player_play(){
-  /*
-  player.seekTo(0,true)
-  player.mute()
-  player.playVideo();
-  player.unMute()
-  */
-
+  console.log("player_play(), start")
   $.when(player.mute(),player.playVideo(),player.unMute()).done(function(){
-    console.log(player.getPlayerState() + "player_play()")
+    console.log(player.getPlayerState() + ",player_play()")
   });
-
-
   //setTimeout( function() {playconfirm();}, 3000);
 }
 
@@ -1280,13 +1271,15 @@ function musicstart(file,ls,videoid) {
   start()
   target=$("#qarea_next").offset().top-2
   //window.scrollTo(0,target)
-  /*
+  
+  
   if(player != void 0){
-    player_play()
-    return
+    player.destroy()
   }
-  */
- console.log(videoid)
+  
+ 
+  //player.destroy()
+  console.log(videoid)
   onYouTubeIframeAPIReady(videoid)
-  console.log(window.outerWidth)
+  //console.log(window.outerWidth)
 }

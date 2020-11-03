@@ -25,6 +25,8 @@ var test2
 
 
 title=[
+  "shiningstar",
+  "ichinenniichidonoichigofestival"
 
 ]
 
