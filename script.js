@@ -351,9 +351,11 @@ $(function(){
 
   //android firefoxはmouseupにも反応してイベントが二度起こる？
   $('body').on({'touchend mouseup': function(e) {
-    //判定に使うcurrentTime
-    judge_time=player.getCurrentTime()
-    //デバッグ用 touchendしたcurrentTime
+    if(player != void 0){
+      //判定に使うcurrentTime
+      judge_time=player.getCurrentTime()
+    }
+      //デバッグ用 touchendしたcurrentTime
     if(startbutton!=""){
       if(endX<$(startbutton).offset().left || endX>$(startbutton).offset().left*1+$(startbutton).width() || endY<$(startbutton).offset().top || endY>$(startbutton).offset().top*1+$(startbutton).width()){
         kakudo=Math.atan2(startX-endX,startY-endY)/(Math.PI/180)
@@ -756,7 +758,6 @@ function fixbar_anime(n,m,p) {
     duration:n*1000,
     easing:"linear"
   })
-  //console.log(player.getCurrentTime())
 }
 
 function colortest2() {
@@ -850,10 +851,12 @@ function changetab(num) {
   $("#ten").text(0)
   $("#max_ten").text(0)
   $("#pause").attr("class","fa fa-pause")
-  if(player.getCurrentTime()!=0 && test!=""){
-    player.pauseVideo()
-    //player.getCurrentTime()=0
-    player.seekTo(0,true)
+  if(player != void 0){
+    if(player.getCurrentTime()!=0 && test!=""){
+      player.pauseVideo()
+      //player.getCurrentTime()=0
+      player.seekTo(0,true)
+    }
   }
   autoscroll()
 }
@@ -1040,7 +1043,6 @@ function onYouTubeIframeAPIReady(videoid) {
   if(videoid == void 0){
     return
   }
-  console.log("onYouTubeIframeAPIReady, start")
   player = new YT.Player('player', {
     playerVars: {
       'origin': location.protocol + '//' + location.hostname + "/",
@@ -1061,7 +1063,6 @@ function onYouTubeIframeAPIReady(videoid) {
       'onError': onPlayerError
     }
   });
-  //console.log(player.getPlayerState() + ",onYouTubeIframeAPIReady()")
   console.log(location.protocol + location.hostname)
   //console.log($("#player").width() + "," + $("#player").height())
   //console.log("w iW" + window.innerWidth + ", w iH" + window.innerHeight)
@@ -1076,9 +1077,7 @@ function onPlayerReady(event) {
 }
 
 function player_play(){
-  console.log("player_play(), start")
   $.when(player.mute(),player.playVideo(),player.unMute()).done(function(){
-    console.log(player.getPlayerState() + ",player_play()")
   });
   //setTimeout( function() {playconfirm();}, 3000);
 }
@@ -1278,8 +1277,6 @@ function musicstart(file,ls,videoid) {
   }
   
  
-  //player.destroy()
-  console.log(videoid)
   onYouTubeIframeAPIReady(videoid)
   //console.log(window.outerWidth)
 }
