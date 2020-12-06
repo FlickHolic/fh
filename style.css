@@ -7,7 +7,11 @@ build: 1549
 */
 html{
   color:#000;background:#FFF;
+  
 }
+
+img[src="https://cdn.000webhost.com/000webhost/logo/footer-powered-by-000webhost-white2.png"]{display:none;}
+
 /*全てにborder-boxを適用*/
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,
 pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{
@@ -125,6 +129,7 @@ body {
   margin: 0px;
   padding: 2px;
   border: 0;
+  font-family: 'M PLUS 1p', sans-serif;
 }
 
 #backimg {
@@ -225,14 +230,14 @@ input[type="button"]{
 }
 
 /*h1 { font-family: ‘Metrophobic’, Arial, serif; font-weight:700;font-size:26px;width: 316px;border-left:20px solid #BD8CBC;padding:0px 0px 0px 2px;}*/
-h1 { font-family: ‘Lato’, sans-serif;font-weight:900;font-size:50px;text-align: center;color: #34495E;padding: 10px 10px 10px 10px;}
-h2,#resulttable { font-family: ‘Lato’, sans-serif;font-weight:900;font-size:15px;text-align: center;color: #34495E;padding: 10px 10px 10px 10px;}
+h1 { font-family: sans-serif;font-weight:900;font-size:50px;text-align: center;color: #34495E;padding: 10px 10px 10px 10px;}
+h2,#resulttable { font-family: sans-serif;font-weight:900;font-size:15px;text-align: center;color: #34495E;padding: 10px 10px 10px 10px;}
 /*
 .memo { font-family: ‘Metrophobic’, Arial, serif; font-weight:700;font-size:14px;border-left:14px solid #BD8CBC;padding:0px 0px 0px 2px;}
 .font { font-family: ‘Metrophobic’, Arial, serif; font-weight:400;font-size:18px;}
 */
 label {
-  font-family: ‘Lato’, sans-serif;font-weight:900;font-size:15px;text-align: center;color: #34495E;padding: 10px 10px 10px 10px;
+  font-family: sans-serif;font-weight:900;font-size:15px;text-align: center;color: #34495E;padding: 10px 10px 10px 10px;
 }
 /*フリックキーボードのデザイン*/
 #flicktable ul {
@@ -279,6 +284,25 @@ label {
   background-color: rgba(255, 255, 255, 0.9);
 }
 
+#playtable ul {
+  display: table;
+  table-layout: fixed;
+  width:100%;
+  text-align: center;
+  margin-bottom: -1px;
+}
+
+#playtable li {  
+  display: inline-block;
+  display: table-cell;
+  text-align: center;
+  border-right: 1px solid gray;
+  border-left: 1px solid gray;
+  border-top: 1px solid gray;
+  border-bottom: 1px solid gray;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
 #stagetable ul {
   display: table;
   table-layout: fixed;
@@ -307,13 +331,17 @@ label {
   display: block;
 }
 
+#blank_table ul {  
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
 #tab {
   padding: 0 0 0 0;
   text-align: center;
 }
 
 .menubutton {
-  font-family: ‘Lato’, sans-serif;font-weight:400;font-size: 16px;
+  font-family: sans-serif;font-weight:400;font-size: 16px;
   display: inline-block;
   width: 48px;
   height: 42px;
@@ -674,7 +702,7 @@ h2{
 
 
 #combo1{
-  font-family: ‘Lato’, sans-serif;font-weight:900;
+  font-family: sans-serif;font-weight:900;
   font-size: smaller;
   top: -20px;
   width: 60px;
@@ -685,7 +713,7 @@ animation: comboanime1 0.5s linear infinite alternate;
 text-shadow: 0px 0px 6px rgba(255,255,255,0.7);
 }
 #ten2{
-  font-family: ‘Lato’, sans-serif;font-weight:900;
+  font-family: sans-serif;font-weight:900;
   font-size: smaller;
   top: 20px;
   width: 60px;
@@ -737,12 +765,24 @@ text-shadow: 0px 0px 6px rgba(255,255,255,0.7);
   background-color: rgba(255, 255, 255, 0.9);*/
   text-align: center;
   line-height: 30px;
-  font-family: ‘Lato’, sans-serif;
+  font-family: sans-serif;
   font-weight: 400;
   text-shadow: 0px 0px 6px rgba(0,0,0,0.2);
 }
 
 #fixbar {
+  border-right: 5px solid blue;
+  /*margin-right: 5px;*/
+  /*padding:5px;*/
+  /*left:5px;*/
+  position: absolute;
+  width: 100%;
+  height: 29px;  
+  /*border: 1px solid #ccc;
+  background-color: rgba(255, 255, 255, 0.9);*/
+}
+
+#fixbar_sub {
   border-right: 5px solid blue;
   /*margin-right: 5px;*/
   /*padding:5px;*/
@@ -783,12 +823,11 @@ text-shadow: 0px 0px 6px rgba(255,255,255,0.7);
 }
 #timingstop {
   position: absolute;
-  height: 29px;
+  height: 30px;
   right: 90%;
-  width: 0px;
-  background-color: rgba(255, 0, 0, 0.8);
-  border-left: 0px solid red; 
-  border-right: 5px solid red; 
+  width: 30px;
+  
+  border: 2px solid blue; 
 }
 
 .timing_bar {  
@@ -805,6 +844,61 @@ text-shadow: 0px 0px 6px rgba(255,255,255,0.7);
   transform:translate3d(0,0,0);
 }
 
+@-moz-keyframes timing1 {
+	0%	{}
+	90%	{}
+	100%	{ -moz-transform: translate(-90%,0px);
+          -webkit-transform: translate(-90%,0px);
+          transform: translate(-90%,0px);
+}
+}
+
+@-webkit-keyframes timing1 {
+	0%	{}
+	90%	{}
+	100%	{ -moz-transform: translate(-90%,0px);
+          -webkit-transform: translate(-90%,0px);
+          transform: translate(-90%,0px);
+}
+}
+
+@keyframes timing1 {
+	0%	{}
+	90%	{}
+	100%	{ -moz-transform: translate(-90%,0px);
+          -webkit-transform: translate(-90%,0px);
+          transform: translate(-90%,0px);
+}
+}
+
+@-moz-keyframes timing1_1 {
+	0%	{}
+	90%	{}
+	100%	{ -moz-transform: translate(-90%,0px);
+          -webkit-transform: translate(-90%,0px);
+          transform: translate(-90%,0px);
+}
+}
+
+@-webkit-keyframes timing1_1 {
+	0%	{}
+	90%	{}
+	100%	{ -moz-transform: translate(-90%,0px);
+          -webkit-transform: translate(-90%,0px);
+          transform: translate(-90%,0px);
+}
+}
+
+@keyframes timing1_1 {
+	0%	{}
+	90%	{}
+	100%	{ -moz-transform: translate(-90%,0px);
+          -webkit-transform: translate(-90%,0px);
+          transform: translate(-90%,0px);
+}
+}
+
+/*
 @-moz-keyframes timing1 {
 	0%	{ border-right: 5px solid green;  }
 	90%	{ border-right: 5px solid green;  }
@@ -858,3 +952,4 @@ text-shadow: 0px 0px 6px rgba(255,255,255,0.7);
           transform: translate(-90%,0px);border-right: 5px solid blue;
 }
 }
+*/

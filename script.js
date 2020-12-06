@@ -1,3 +1,5 @@
+
+
 //Youtube API呼び出し
 var tag = document.createElement('script');
 
@@ -45,8 +47,6 @@ async function play_se_click(){
 };
 */
 
-
-
 //window.AudioContext = window.AudioContext || window.webkitAudioContext;
 //var context = new AudioContext();
 //var request
@@ -71,28 +71,23 @@ window.addEventListener('load', function() {
 })
 
 function clickPlay(file) {
-
+  console.log("click sound")
   request = new XMLHttpRequest();
   request.open("GET", file, true);
   request.responseType = "arraybuffer";
   request.onload = completeOnLoad;
-  request.send();
-  
+  request.send();  
 };
 
 function completeOnLoad() {
-  
   source = context.createBufferSource();
-
   context.decodeAudioData(request.response, function (buf) {
     source.buffer = buf;
     source.loop = false;
     source.connect(context.destination);
     source.start();
   });
-
 }
-
 
 /*
 (function(window){
@@ -242,6 +237,7 @@ function autoscroll() {
   window.scrollTo(0,target)
 }
 
+/*
 function loadls_rankscore() {
   var len=title.length
   for(var i=0;i<len;i++){
@@ -251,16 +247,96 @@ function loadls_rankscore() {
       $('#highscore'+tmp_title).text(localStorage.getItem('highscore'+tmp_title))
       if(localStorage.getItem('highrank'+tmp_title)=="S"){
         $('#star'+tmp_title).addClass("fa fa-trophy")
+      }
+      else if(localStorage.getItem('highrank'+tmp_title)=="C" || localStorage.getItem('highrank'+tmp_title)=="B" || localStorage.getItem('highrank'+tmp_title)=="A" || localStorage.getItem('highrank'+tmp_title)=="AA"){
+        $('#star'+tmp_title).addClass("fa fa-star-o")
+      }
+      else if(localStorage.getItem('highrank'+tmp_title)=="AAA"){
+        $('#star'+tmp_title).addClass("fa fa-star")
+      }
     }
-    else if(localStorage.getItem('highrank'+tmp_title)=="C" || localStorage.getItem('highrank'+tmp_title)=="B" || localStorage.getItem('highrank'+tmp_title)=="A" || localStorage.getItem('highrank'+tmp_title)=="AA"){
-      $('#star'+tmp_title).addClass("fa fa-star-o")
-    }
-    else if(localStorage.getItem('highrank'+tmp_title)=="AAA"){
-      $('#star'+tmp_title).addClass("fa fa-star")
-    }
-  }
   }
 }
+*/
+
+function getLen(str){
+  var result = 0;
+  for(var i=0;i<str.length;i++){
+    var chr = str.charCodeAt(i);
+    if((chr >= 0x00 && chr < 0x81) ||
+       (chr === 0xf8f0) ||
+       (chr >= 0xff61 && chr < 0xffa0) ||
+       (chr >= 0xf8f1 && chr < 0xf8f4)){
+      //半角文字の場合は1を加算
+      result += 1;
+    }else{
+      //それ以外の文字の場合は2を加算
+      result += 2;
+    }
+  }
+  //結果を返す
+  return result;
+};
+
+
+function make_stagetable(){
+  var font_size = 16
+  var li_width = 0.7
+  var max_mojisu = Math.floor($('body').width()*li_width/font_size)-1
+  var len=music_list.length
+  var dom=""
+  for(var i=0;i<len;i++){
+    var mojisize = "100%"
+    var mojisu = getLen(music_list[i].title)/2
+    if(mojisu > max_mojisu){
+      mojisize = Math.floor(max_mojisu/mojisu*100) + "%"
+    }
+    dom = dom + '<ul id="border' + music_list[i].music + '" style="background-image: url(\'\');background-size:cover;background-position: center center;background-repeat: no-repeat;"><li><a>' + music_list[i].level + '</a><i id="star' + music_list[i].music + '"></i></li><li onclick="pre_musicstart(\'' + music_list[i].music + '\',\'' + music_list[i].music + '\',\'' + music_list[i].url + '\')" style="width: 70%;"><a style="font-size: ' + mojisize + ';"><i id="icon' + music_list[i].music + '"></i>' + music_list[i].title + '</a><a>' + music_list[i].artist + '</a></li><li style="width: 20%;"><a id="highrank' + music_list[i].music + '">-</a><a id="highscore' + music_list[i].music + '">-</a></li></ul>'
+  }
+  $('#blank_table').append(dom)
+  /*
+  dom.ready(function() {
+    　$('#blank_table').width()
+  });
+  */
+
+}
+
+function make_credittable(){
+  var len=music_list.length
+  var dom=""
+  for(var i=0;i<len;i++){
+    dom = dom + '<i class="fa fa-music"></i>' + music_list[i].title + '<br>' + music_list[i].credit + '<br><br></br>'
+  }
+  $('#blank_credit').append(dom)
+
+}
+
+
+function loadls_rankscore() {
+  var len=music_list.length
+  console.log(len)
+  for(var i=0;i<len;i++){
+    tmp_title=music_list[i].music
+    console.log(tmp_title)
+    if(localStorage.getItem('highrank'+tmp_title)!=null){
+      $('#highrank'+tmp_title).text(localStorage.getItem('highrank'+tmp_title))
+      $('#highscore'+tmp_title).text(localStorage.getItem('highscore'+tmp_title))
+      if(localStorage.getItem('highrank'+tmp_title)=="S"){
+        $('#star'+tmp_title).addClass("fa fa-trophy")
+      }
+      else if(localStorage.getItem('highrank'+tmp_title)=="C" || localStorage.getItem('highrank'+tmp_title)=="B" || localStorage.getItem('highrank'+tmp_title)=="A" || localStorage.getItem('highrank'+tmp_title)=="AA"){
+        $('#star'+tmp_title).addClass("fa fa-star-o")
+      }
+      else if(localStorage.getItem('highrank'+tmp_title)=="AAA"){
+        $('#star'+tmp_title).addClass("fa fa-star")
+      }
+    }
+  }
+}
+
+
+
 
 //フリックキーボード用文字マップ
 map={"a":"あいうえお",
@@ -334,7 +410,6 @@ $(function(){
         'top' : ($(this).offset().top+$(this).height()+2) + 'px'
       }).text(map[$(this).attr("id")].charAt(4))
       $(this).append(bottomButton)}
-
     }
 
     startbutton=this
@@ -373,16 +448,9 @@ $(function(){
         }
       }
       else{$("#aarea").text(map[$(startbutton).attr("id")].charAt(0))}
-      if($("#aarea").text()===$("#narea").text().charAt(0)){
-        /*
-        const se_click = document.querySelector("#se_click");
-        se_click.pause()
-        se_click.currentTime = 0;
-        se_click.play();
-        */
+      if(($('#easy').is(':checked') && $(startbutton).attr("id") == kasi_demo[kasi_now]) || ($("#aarea").text()===$("#narea").text().charAt(0))){
 
-       //play_se_click()
-       clickPlay("click3.mp3")
+       
 
         $("#narea").attr("style","").css({"border":"1px solid #ccc"}).text($("#narea").text().substr(1))
         $("#qarea").attr("style","")
@@ -390,6 +458,7 @@ $(function(){
         //エモーショナル点数
         //押したタイミングか、もしくは離したタイミングが指定の秒数以内ならGREAT
         if(Math.abs(kasi_s[kasi_now]-judge_time)<kasi_emotime || Math.abs(kasi_s[kasi_now]-starttime)<kasi_emotime){
+          clickPlay("great.mp3")
           emo_ten=emo_ten+1
           combo_ten=combo_ten+1
           if(max_combo<combo_ten){max_combo=combo_ten}
@@ -402,7 +471,7 @@ $(function(){
           $("#comboarea1").text("GREAT "+combo_ten).css("animation","")
           $("#comboarea1").css("color","blue")
           setTimeout(colortest13,0)
-          if($('input[name="timingflag"]:checked').val()=="fix"){          
+          if($('input[name="timingflag"]:checked').val()=="fix"){        
             if(Math.abs(Math.abs(kasi_s[kasi_now]-judge_time)-kasi_emotime)<Math.abs(Math.abs(kasi_s[kasi_now]-starttime)<kasi_emotime)){
               input_bar_time=judge_time
             }
@@ -432,7 +501,8 @@ $(function(){
             //$("#combo1").text("BAD")
             //setTimeout(comboclear,500)
             //$("#combo1").css({"color":"pink","text-shadow":"0 0 1px #fff,0 0 2px #fff,0 0 3px #fff,0 0 4px #ff00de,0 0 7px #ff00de,0 0 8px #ff00de,0 0 9px #ff00de,0 0 10px #ff00de"})
-          $("#combo1").css("color","black").text(Math.round((kasi_s[kasi_now]-judge_time)*1000)/1000)
+            clickPlay("good.mp3")
+            $("#combo1").css("color","black").text(Math.round((kasi_s[kasi_now]-judge_time)*1000)/1000)
           $("#narea").attr("style","")
           $("#comboarea1").text("GOOD").css({"color":"black"})
           setTimeout(colortest4,0)
@@ -526,9 +596,12 @@ function timing_bar_start(score_head){
         }
         if(mozi_time_num2>80){mozi_time_num2=0}
         //本当はkasi_emotimeを引いた時間からsetTimeoutを実行するのがいいんだけど曲によってはズレが大きいので一律で0.2にしておく
-          if(i==0){setTimeout(function(x,y,z){colortest7_1(x,y,z)},(kasi_s[mozi_time_now2]-player.getCurrentTime()-timing_bar_time-0.1)*1000,timing_bar_time,mozi_time_num2,kasi_s[mozi_time_now2])}
-          else{setTimeout(function(x,y,z){colortest7(x,y,z)},(kasi_s[mozi_time_now2]-player.getCurrentTime()-timing_bar_time-0.1)*1000,timing_bar_time,mozi_time_num2,kasi_s[mozi_time_now2])}
-
+          if(i==0){
+            setTimeout(function(x,y,z){colortest7_1(x,y,z)},(kasi_s[mozi_time_now2]-player.getCurrentTime()-timing_bar_time-0.1)*1000,kasi[score_head][2][i],mozi_time_num2,kasi_s[mozi_time_now2])
+          }
+          else{
+            setTimeout(function(x,y,z){colortest7(x,y,z)},(kasi_s[mozi_time_now2]-player.getCurrentTime()-timing_bar_time-0.1)*1000,kasi[score_head][2][i],mozi_time_num2,kasi_s[mozi_time_now2])
+          }
           setTimeout(function(y){colortest8(y)},1,mozi_time_num2)
         mozi_time_num2=mozi_time_num2+1
         mozi_time_now2=mozi_time_now2+1
@@ -731,10 +804,17 @@ function shortcut_bar_anime() {
 }
 
 function colortest(n,m,p) {
-  $("#qbar").css({"transform":"none","transition":"none"})
+  //$("#qbar").css({"transform":"","transition":""})
+  //CSSが消せないから力技で無理やり再生成を行っている！
+  $("#qbar").remove()
+  $("#qbar_cover").append('<div id="qbar"></div>')
+  $("#qbar").css({"background-color":"green","height":"5px","transform-origin":"left"})
 
   if($('#shortcut').is(':checked') && kasi[p][5] != void 0){
-    return
+    n=kasi[p][5]+(kasi[p][0]+kasi[p][3]-kasi[p][5])-player.getCurrentTime()
+    //return
+    //n=kasi[p][0]+kasi[p][3]-0.3-kasi[p][5]
+    //console.log(player.getCurrentTime())
   }
   else{
     n=n-(player.getCurrentTime()-m)
@@ -746,13 +826,18 @@ function colortest(n,m,p) {
   })
 }
 
+
+
 function fixbar_anime(n,m,p) {
   $("#fixbar").css({"transform":"none","transition":"none"})
-  //if($('#shortcut').is(':checked') && Object.keys(kasi[p]).length>5){
+
   if($('#shortcut').is(':checked') && kasi[p][5] != void 0){
     return
   }
+
   n=n-(player.getCurrentTime()-m)
+  //$("#ten").text(n)
+
   $("#fixbar").transition({
     x:"-100%",
     duration:n*1000,
@@ -802,17 +887,53 @@ function colortest7(n,m,l) {
   $("#timing_bar"+m).css({
     "-moz-animation":"timing1 "+bartime+"s linear",
     "-webkit-animation":"timing1 "+bartime+"s linear",
-    "animation":"timing1 "+bartime+"s linear"
+    "animation":"timing1 "+bartime+"s linear",
+    "text-align": "right",
+    "display": "inline-block",
+    "vertical-align": "middle",
+    "margin": "0",
+    "font-size": $("#timing_bar"+m).height()-2-4
+  })
+  .text(n)
+  $("#timing_bar"+m).on('animationend webkitAnimationEnd',function(){
+    $("#timing_bar"+m).text("")
+    setTimeout(function(){
+      type_bar_check(m)
+    },300)
   })
 }
 
 function colortest7_1(n,m,l) {
+  eval("var kasi_now_bar" + m + " = " + kasi_now)
   var bartime=l-player.getCurrentTime()
   $("#timing_bar"+m).css({
     "-moz-animation":"timing1_1 "+bartime+"s linear",
     "-webkit-animation":"timing1_1 "+bartime+"s linear",
-    "animation":"timing1_1 "+bartime+"s linear"
+    "animation":"timing1_1 "+bartime+"s linear",
+    "text-align": "right",
+    "display": "inline-block",
+    "vertical-align": "middle",
+    "margin": "0",
+    "font-size": $("#timing_bar"+m).height()-2-4
   })
+  .text(n)
+  $("#timing_bar"+m).on('animationend webkitAnimationEnd',function(){
+    $("#timing_bar"+m).text("")
+    setTimeout(function(){
+      type_bar_check(m)
+    },300)
+  })
+  //console.log($("#timing_bar"+m).height(),$("#timing_bar"+m).innerHeight())
+}
+
+function type_bar_check(m){
+  kasi_now_forbar = kasi_now_forbar + 1
+  if(kasi_now_forbar > kasi_now){
+    $("#narea").attr("style","").css({"border":"1px solid #ccc"}).text($("#narea").text().substr(1))
+    kasi_now = kasi_now + 1
+    //console.log(kasi_now + "delete" + player.getCurrentTime())
+  }
+  $("#timing_bar"+m).off('animationend webkitAnimationEnd')
 }
 
 function colortest8(m) {
@@ -830,7 +951,6 @@ function colortest12() {
 }
 
 function colortest13() {
-
   $("#comboarea1").css({
   "-moz-animation":"anime13 0.1s linear",
   "-webkit-animation":"anime13 0.1s linear",
@@ -904,7 +1024,6 @@ function stageclear() {
   clearscore=emo_ten*1+$("#ten").text()*1
   maxscore=kasi_s.length*2
 
-
   if($('#autoplay').is(':checked')==true){$("#result1").text("AUTOPLAY END")}
   else if(clearscore/maxscore>$("#highscore"+playing).text()*1){}
   else if(clearscore/maxscore<2/9){$("#result1").text("Stage failure..."),$("#result2").text("Rank F")}
@@ -919,6 +1038,10 @@ function stageclear() {
   
   $("#result3").text("SCORE "+clearscore)
   $("#result5").text("MAX COMBO "+max_combo)
+
+  if($('#easy').is(':checked')){
+    return
+  }
 
   if($("#highscore"+playing).text()=="-" || $("#highrank"+playing).text()==null || localStorage.getItem("highscore"+playing)<clearscore){
 
@@ -939,11 +1062,7 @@ function stageclear() {
   
 }
 
-$(function(){
-  $(window).bind("resize",function(){
-    autoscroll()
-});
-})
+
 
 function editstart() {
   var num = 4;
@@ -1036,9 +1155,6 @@ function checkcache() {
   }, false);
 }
 
-
-
-
 function onYouTubeIframeAPIReady(videoid) {
   if(videoid == void 0){
     return
@@ -1063,9 +1179,6 @@ function onYouTubeIframeAPIReady(videoid) {
       'onError': onPlayerError
     }
   });
-  console.log(location.protocol + location.hostname)
-  //console.log($("#player").width() + "," + $("#player").height())
-  //console.log("w iW" + window.innerWidth + ", w iH" + window.innerHeight)
 }
 
 function onPlayerError(event) {
@@ -1079,6 +1192,7 @@ function onPlayerReady(event) {
 function player_play(){
   $.when(player.mute(),player.playVideo(),player.unMute()).done(function(){
   });
+  //player.seekTo(0.01,true)  
   //setTimeout( function() {playconfirm();}, 3000);
 }
 
@@ -1097,9 +1211,7 @@ function playconfirm(){
 }
 
 function onPlayerStateChange(event) {
-  console.log(player.getPlayerState())
   if (event.data == YT.PlayerState.PLAYING) {
-
 
     //var startTime = new Date().getTime();　//描画開始時刻を取得
     (function loop(){
@@ -1113,7 +1225,7 @@ function onPlayerStateChange(event) {
             return
           }}
           */
-
+        /*
         if (kasi[Math.round(player.getCurrentTime()) + timing_bar_time] && Math.round(player.getCurrentTime()) + timing_bar_time != kasi_s_count &&
             $('#shortcut').is(':checked') && kasi[String(Math.round(player.getCurrentTime()) + timing_bar_time)][5] != void 0) {
           
@@ -1122,6 +1234,23 @@ function onPlayerStateChange(event) {
           player.seekTo(kasi[act_time][5],true)          
           return
         }
+        */        
+        //console.log(player.getCurrentTime())
+        //console.log(player.getPlayerState())
+
+        if (kasi[Math.round(player.getCurrentTime()) + timing_bar_time] && Math.round(player.getCurrentTime())  + timing_bar_time != kasi_s_count &&
+        $('#shortcut').is(':checked') && kasi[String(Math.round(player.getCurrentTime() + timing_bar_time))][5] != void 0) {      
+          kasi_s_count = Math.round(player.getCurrentTime()) + timing_bar_time
+          act_time = kasi_s_count
+          player.seekTo(kasi[act_time][5] - timing_bar_time,true)
+          //setTimeout(function(){colortest(kasi[act_time][3],kasi[act_time][0],act_time)},timing_bar_time*1000)
+
+          //setTimeout(colortest, (kasi[act_time][3],kasi[act_time][0],act_time, 300))
+          //colortest(kasi[act_time][3],kasi[act_time][0],act_time)
+          return
+        }
+
+
 
         //各種タイミング表示関数を実行するsetTimeout
         if (kasi[Math.round(player.getCurrentTime()) + timing_bar_time] && Math.round(player.getCurrentTime()) + timing_bar_time != kasi_s_count &&
@@ -1137,15 +1266,19 @@ function onPlayerStateChange(event) {
           setTimeout(timing, (kasi[act_time][0] - 2 - player.getCurrentTime()) * 1000, act_time)
         }
         //今歌詞と今ひらがな歌詞表示関数を実行するsettimeout
-        if (kasi[Math.round(player.getCurrentTime())] && Math.round(player.getCurrentTime()) != kasi_n_count) {
-            kasi_n_count = Math.round(player.getCurrentTime())
-            act_time_n = kasi_n_count
-            setTimeout(timing_n, (kasi[act_time_n][0] - player.getCurrentTime()) * 1000, act_time_n)
-          //}
+        if (kasi[Math.ceil(player.getCurrentTime())] && Math.ceil(player.getCurrentTime()) != kasi_n_count) {
+          kasi_n_count = Math.ceil(player.getCurrentTime())
+          act_time_n = kasi_n_count
+          setTimeout(timing_n, (kasi[act_time_n][0] - player.getCurrentTime()) * 1000, act_time_n)
         }
+
+        if(player.getPlayerState() != 1){
+          window.cancelAnimationFrame(loop_playing)
+        }
+        
     })();
   }
-  else if (event.data == YT.PlayerState.ENDED || event.data == YT.PlayerState.PAUSED) {
+  else if (player.getPlayerState() == 0 || event.data == YT.PlayerState.ENDED || event.data == YT.PlayerState.PAUSED) {
     window.cancelAnimationFrame(loop_playing)
   }
 }
@@ -1156,8 +1289,49 @@ function stopVideo() {
 }
 
 
+function pre_musicstart(file,music,videoid) {
+  now_select_music = music
+  now_select_videoid = videoid
+  /*
+  if(player != void 0){
+    player.destroy()
+  }
+  pre_YoutubeAPIReady(videoid,music)
+  */
+  $("#blank_table").children().css({"background-color":"white"})
+  $("#border"+music).css({"background-color":"green"})  
+}
+
+function pre_YoutubeAPIReady(videoid) {
+  if(videoid == void 0){
+    return
+  }
+  player = new YT.Player('pre_player', {
+    playerVars: {
+      'origin': location.protocol + '//' + location.hostname + "/",
+      'playsinline': 1
+    },
+    height: "68.67px",
+    width: $("#backimg").width()*0.5,
+    videoId: videoid,
+    events: {
+      'onReady': pre_PlayerReady
+    }
+  });  
+}
+
+function pre_PlayerReady() {
+  player.mute()
+  player.playVideo()
+  player.unMute()
+  $("#playtable").children().css("height","44px")
+}
+
 //STAGE SELECTをクリックしたら起動する
-function musicstart(file,ls,videoid) {
+function musicstart() {
+  var file = now_select_music
+  var ls = file
+  var videoid = now_select_videoid
   var num = 1;
     $(".content").addClass('disnon');
     $(".content").eq(num).removeClass('disnon');
@@ -1165,17 +1339,21 @@ function musicstart(file,ls,videoid) {
     $("#tab li").eq(num).addClass('select')
 
     //$('#backimg').css("height","100%")
-  
-
-  
+    
   eval("kasi=$.merge([], "+ls+")")
   eval("kasi_s="+ls+"_s")
   //eval("kasi_n="+ls+"_n")
   eval("kasi_demo="+ls+"_demo")
 
+  //kasi_tとkasi_demoのための番号
   kasi_now=0
+  //リズムモードのための番号
+  kasi_now_forbar = 0
+  //次歌詞を表示するためのkasi配列の番号
   kasi_count=0
+  //各種タイミングを表示するためのkasi配列の番号
   kasi_s_count=0
+  //今歌詞を表示するためのkasi配列の番号
   kasi_n_count=0
   emo_ten=0
   combo_ten=0
@@ -1190,8 +1368,14 @@ function musicstart(file,ls,videoid) {
   input_bar_num=0
   musicstarter="intro"
   //歌詞入力タイミングの秒速　/80の部分を調整する
-  timing_bar_time=Math.min(Math.round($(window).width()/80),8,Math.floor(kasi_s[0])-2)
+  const minsecforbar = music_list.filter(x => x.music === file)
+  //console.log(minsecforbar)
+  //console.log(minsecforbar[0].minsec)
+
+  timing_bar_time=Math.min(Math.ceil($(window).width()*0.9/(45/minsecforbar[0].minsec)),8,Math.floor(kasi_s[0])-2)
   if($('input[name="timingflag"]:checked').val()=="fix"){timing_bar_time=0}
+  console.log(timing_bar_time + "timing_bar_time")
+  //timing_bar_time = 0
   //$("#backimg").css({"background-image":"url("+file+".jpg)"})//背景画像邪魔ならコメントアウト
   //$('#backimg').css("height","100%")
   $("#qarea").text("")
@@ -1220,7 +1404,10 @@ function musicstart(file,ls,videoid) {
   $("#fixbar").remove()
   $("#fixbar_cover").append('<li id="fixbar"></li>')
   //$(".timing_bar").css("-moz-animation","none").css("-webkit-animation","none").css("animation","none")
-  $('#timingstop').css("border-color","red")
+  $('#timingstop').css("border-color","blue")
+  for(var i=0;i<81;i++){
+    $("#timing_bar"+i).off('animationend webkitAnimationEnd').text("").css("-webkit-animation","none").css("-moz-animation","none").css("animation","none")
+  }
 
   if($('input[name="mojiflag"]:checked').val()=="none"){
     $('#a').css("color","rgba(255,255,255,0)")
@@ -1269,7 +1456,6 @@ function musicstart(file,ls,videoid) {
 
   start()
   target=$("#qarea_next").offset().top-2
-  //window.scrollTo(0,target)
   
   
   if(player != void 0){
@@ -1279,4 +1465,8 @@ function musicstart(file,ls,videoid) {
  
   onYouTubeIframeAPIReady(videoid)
   //console.log(window.outerWidth)
+}
+
+function ctlog(){
+  console.log(player.getCurrentTime())
 }
