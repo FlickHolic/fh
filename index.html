@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html manifest="flick.appcache">
+<html>
 
   <head>
     <meta charset="utf-8" name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=0,minimal-ui" />
@@ -235,13 +235,13 @@
     <div class="content disnon">
 
       <div id="playtable">
-        <ul onclick="musicstart()"><li id="pre_player"></li><li style="height: 44px;text-align: center;"><a><i class="fa fa-play"></i> Play</a></li></ul>
+        <ul><li id="pre_player"></li><li id="playbutton" onclick="musicstart()" style="height: 44px;text-align: center;color: #e2e2e2;"><a><i class="fa fa-play"></i> Play</a></li></ul>
       </div>
       <h2>STAGE SELECT</h2>      
       <div id="stagetable" class="stage">
         
         <ul>
-          <li><a>Lv</a></li><li style="width: 70%;"><a>Title</a></li><li style="width: 20%;"><a>Rcd</a></li>
+          <li><a>Lv</a></li><li style="width: 70%;"><a>Title</a></li><li style="width: 20%;"><a>Score</a></li>
           </ul>
         <!--
         <ul onclick="musicstart('shiningstar','shiningstar','Qd01-6xVSHk')" style="background-image: url('');background-size:cover;background-position: center center;background-repeat: no-repeat;">
@@ -259,29 +259,6 @@
         <ul><li style="height: 44px;text-align: center;"><a onclick="changetab(5)"><i class="fa fa-cog"></i> コンフィグ</a></li></ul>
         <br>
 
-        <h2>MOJI PANEL</h2>
-        <div align="center">
-          <label><input type="radio" name="mojiflag" value="none">NONE</label>
-          <label><input type="radio" name="mojiflag" value="panel" checked>PANEL</label>
-        </div>
-        <h2>TIMING BAR</h2>
-        <!--
-        <div align="center"><input type="checkbox" id="timingflag"></div>
-        -->
-        <div align="center">
-          <label><input type="radio" name="timingflag" value="none">NONE</label>
-          <label><input type="radio" name="timingflag" value="slot">SLOT</label>
-          <label><input type="radio" name="timingflag" value="fix" checked>FIX</label>
-          <label><input type="radio" name="timingflag" value="bar">BAR</label>
-        </div>
-        <h2>SHORTCUT MODE</h2>
-        <div align="center"><input type="checkbox" id="shortcut" checked></div>
-        <h2>EASY MODE</h2>
-        <div align="center"><input type="checkbox" id="easy" checked></div>
-        <h2>DEBUG MODE</h2>
-        <div align="center"><input type="checkbox" id="debug" ></div>
-        <h2>AUTOPLAY MODE</h2>
-        <div align="center"><input type="checkbox" id="autoplay" ></div>
 
         <br>
         <!-- 未完成のエディット画面移行ボタン
@@ -292,7 +269,7 @@
         <br><br>
         <div align="center"><input type="button" onclick="if(confirm('スコアを削除してよろしいですか？')==true){localStorage.clear()}" value="スコア消去" ></div>
         <br><br>
-        <div align="center"><img src="qr.gif" alt="QR"></div>
+        <div align="center"><img src="qr.png" alt="QR"></div>
       </div>
     </div>
 
@@ -318,6 +295,7 @@
     <!--4.CreditDiv-->
     <div class="content disnon">
       <h2>MUSIC</h2>
+      <hr>
       <!--
         <i class="fa fa-music"></i> シャイニングスター
         <br>
@@ -329,6 +307,8 @@
       <div id="blank_credit">
       </div>
 
+      <hr>
+
       <h2 onclick="changetab(2)" style="text-align: center;border: 1px solid gray;margin: 2px;background-color: rgba(255, 255, 255, 0.9);"><i class="fa fa-list-ul"></i> BACK</h2>
       <br>
     </div>
@@ -337,9 +317,37 @@
     <!--6.ConfigDiv-->
     <div class="content disnon">
       <h2>CONFIG</h2>
-      
+      <hr>
+      <h2>SE VOLUME</h2>
+      <div align="center">
+        <input type="range" id="se_range" step="0.1" max="5" min ="0"><a id="se_range_val">2.5</a> <i class="fa fa-play"  onclick="clickPlay('great.mp3')"></i>
+      </div>
+      <h2>MOJI PANEL</h2>
+      <div align="center">
+        <label><input type="radio" name="mojiflag" value="none">NONE</label>
+        <label><input type="radio" name="mojiflag" value="panel" checked>PANEL</label>
+      </div>
+      <h2>TIMING BAR</h2>
+      <!--
+      <div align="center"><input type="checkbox" id="timingflag"></div>
+      -->
+      <div align="center">
+        <label><input type="radio" name="timingflag" value="none">NONE</label>
+        <label><input type="radio" name="timingflag" value="slot">SLOT</label>
+        <label><input type="radio" name="timingflag" value="fix">FIX</label>
+        <label><input type="radio" name="timingflag" value="bar" checked>BAR</label>
+      </div>
+      <h2>SHORTCUT MODE</h2>
+      <div style="text-align: center;"><input type="checkbox" id="shortcut" checked></div>
+      <h2>EASY MODE</h2>
+      <div align="center"><input type="checkbox" id="easy" ></div>
+      <h2>DEBUG MODE</h2>
+      <div align="center"><input type="checkbox" id="debug" ></div>
+      <h2>AUTOPLAY MODE</h2>
+      <div align="center"><input type="checkbox" id="autoplay" ></div>
 
-      <br>
+      <hr>
+
       <h2 onclick="changetab(2)" style="text-align: center;border: 1px solid gray;margin: 2px;background-color: rgba(255, 255, 255, 0.9);"><i class="fa fa-list-ul"></i> BACK</h2>
       <br>
     </div>     

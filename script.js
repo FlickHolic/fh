@@ -70,8 +70,8 @@ window.addEventListener('load', function() {
   context = new AudioContext();
 })
 
+//指定したfile名を鳴らすために呼び出す（効果音）
 function clickPlay(file) {
-  console.log("click sound")
   request = new XMLHttpRequest();
   request.open("GET", file, true);
   request.responseType = "arraybuffer";
@@ -79,15 +79,54 @@ function clickPlay(file) {
   request.send();  
 };
 
+$(function(){
+  $("#se_range").on("input",function(){
+    se_volume = $(this).val()
+    $("#se_range_val").text(se_volume)
+    localStorage.setItem("ls_se_volume", se_volume)
+    
+  })
+})
+
+
+//呼び出したfileを再生する
+function completeOnLoad() {
+
+  var gainNode = context.createGain()
+  gainNode.gain.value = se_volume
+  gainNode.connect(context.destination)
+
+  source = context.createBufferSource();
+  context.decodeAudioData(request.response, function (buf) {
+    source.buffer = buf;
+    source.loop = false;
+    //source.connect(context.destination);
+
+    
+    source.connect(gainNode)
+    
+    
+    source.start();
+  });
+}
+
+/*
 function completeOnLoad() {
   source = context.createBufferSource();
   context.decodeAudioData(request.response, function (buf) {
     source.buffer = buf;
     source.loop = false;
     source.connect(context.destination);
+
+    var gainNode = context.createGain()
+    gainNode.gain.value = 0.1
+    source.connect(gainNode)
+    gainNode.connect(context.destination)
+    
     source.start();
   });
 }
+*/
 
 /*
 (function(window){
@@ -208,6 +247,7 @@ $(document).ready(function(){
  }
 });
 
+//ボリュームボタンを押したときの挙動
 $(function(){
   $("#volumeoff").on({ 'touchstart mousedown': function () { volumeoff() } })
   $("#volumedown").on({ 'touchstart mousedown': function () { volumedown()   } })
@@ -229,7 +269,6 @@ function volumeup() {
     player.setVolume(player.getVolume() + 10)
   }
 }
-//スマートフォン以外の場合ボリュームボタンを表示する
 
 //onload時にアドレスバーを隠す
 function autoscroll() {
@@ -259,6 +298,7 @@ function loadls_rankscore() {
 }
 */
 
+//半角を1、全角を2とした時の文字数
 function getLen(str){
   var result = 0;
   for(var i=0;i<str.length;i++){
@@ -279,6 +319,7 @@ function getLen(str){
 };
 
 
+//music_list配列の数だけ選曲テーブルを作成する
 function make_stagetable(){
   var font_size = 16
   var li_width = 0.7
@@ -291,17 +332,12 @@ function make_stagetable(){
     if(mojisu > max_mojisu){
       mojisize = Math.floor(max_mojisu/mojisu*100) + "%"
     }
-    dom = dom + '<ul id="border' + music_list[i].music + '" style="background-image: url(\'\');background-size:cover;background-position: center center;background-repeat: no-repeat;"><li><a>' + music_list[i].level + '</a><i id="star' + music_list[i].music + '"></i></li><li onclick="pre_musicstart(\'' + music_list[i].music + '\',\'' + music_list[i].music + '\',\'' + music_list[i].url + '\')" style="width: 70%;"><a style="font-size: ' + mojisize + ';"><i id="icon' + music_list[i].music + '"></i>' + music_list[i].title + '</a><a>' + music_list[i].artist + '</a></li><li style="width: 20%;"><a id="highrank' + music_list[i].music + '">-</a><a id="highscore' + music_list[i].music + '">-</a></li></ul>'
+    dom = dom + '<ul onclick="pre_musicstart(\'' + music_list[i].music + '\',\'' + music_list[i].music + '\',\'' + music_list[i].url + '\')" id="border' + music_list[i].music + '" style="background-image: url(\'\');background-size:cover;background-position: center center;background-repeat: no-repeat;"><li><a>' + music_list[i].level + '</a><i id="star' + music_list[i].music + '"></i></li><li style="width: 70%;"><a style="font-size: ' + mojisize + ';"><i id="icon' + music_list[i].music + '"></i>' + music_list[i].title + '</a><a>' + music_list[i].artist + '</a></li><li style="width: 20%;"><a id="highrank' + music_list[i].music + '">-</a><a id="highscore' + music_list[i].music + '">-</a></li></ul>'
   }
   $('#blank_table').append(dom)
-  /*
-  dom.ready(function() {
-    　$('#blank_table').width()
-  });
-  */
-
 }
 
+//music_list配列の数だけクレジットテーブルを作成する
 function make_credittable(){
   var len=music_list.length
   var dom=""
@@ -309,16 +345,13 @@ function make_credittable(){
     dom = dom + '<i class="fa fa-music"></i>' + music_list[i].title + '<br>' + music_list[i].credit + '<br><br></br>'
   }
   $('#blank_credit').append(dom)
-
 }
 
-
+//music_list配列の数だけハイスコアを呼び出して表示する
 function loadls_rankscore() {
   var len=music_list.length
-  console.log(len)
   for(var i=0;i<len;i++){
     tmp_title=music_list[i].music
-    console.log(tmp_title)
     if(localStorage.getItem('highrank'+tmp_title)!=null){
       $('#highrank'+tmp_title).text(localStorage.getItem('highrank'+tmp_title))
       $('#highscore'+tmp_title).text(localStorage.getItem('highscore'+tmp_title))
@@ -333,10 +366,16 @@ function loadls_rankscore() {
       }
     }
   }
+
+  if(localStorage.getItem("ls_se_volume") != null){
+    se_volume = localStorage.getItem("ls_se_volume")
+    document.getElementById('se_range').value = se_volume
+    $("#se_range_val").text(se_volume)
+  }
+  else{
+    se_volume = $("#se_range").val()
+  }
 }
-
-
-
 
 //フリックキーボード用文字マップ
 map={"a":"あいうえお",
@@ -358,6 +397,7 @@ var startDate
 //フリック文字パネルを操作した時の処理
 $(function(){
   $('#flickdiv').on({ 'touchstart': function (e) { e.preventDefault(); } })
+  $('#flicktable').on({ 'touchstart mousedown': function(e) { e.preventDefault(); } })
   $('.pause').on({ 'touchstart mousedown': function () { stopcheck(); } })
   
   $('.button').on({'touchstart mousedown': function(e) {
@@ -460,6 +500,7 @@ $(function(){
         if(Math.abs(kasi_s[kasi_now]-judge_time)<kasi_emotime || Math.abs(kasi_s[kasi_now]-starttime)<kasi_emotime){
           clickPlay("great.mp3")
           emo_ten=emo_ten+1
+          
           combo_ten=combo_ten+1
           if(max_combo<combo_ten){max_combo=combo_ten}
           if(Math.abs(kasi_s[kasi_now]-judge_time)<kasi_emotime){
@@ -468,6 +509,7 @@ $(function(){
           else{$("#combo1").css("color","blue").text(Math.round((kasi_s[kasi_now]-starttime)*1000)/1000)}
           $("#narea").attr("style","")
           setTimeout(colortest12,0)
+          great_count = great_count + 1
           $("#comboarea1").text("GREAT "+combo_ten).css("animation","")
           $("#comboarea1").css("color","blue")
           setTimeout(colortest13,0)
@@ -504,6 +546,7 @@ $(function(){
             clickPlay("good.mp3")
             $("#combo1").css("color","black").text(Math.round((kasi_s[kasi_now]-judge_time)*1000)/1000)
           $("#narea").attr("style","")
+          good_count = good_count + 1
           $("#comboarea1").text("GOOD").css({"color":"black"})
           setTimeout(colortest4,0)
           if($('input[name="timingflag"]:checked').val()=="fix"){
@@ -543,6 +586,7 @@ $(function(){
         $("#narea").attr("style","")
         combo_ten=0
         //$("#combo1").css({"color":"gray","text-shadow":"0 0 1px #fff,0 0 2px #fff,0 0 3px #fff,0 0 4px #ccc,0 0 7px #ccc,0 0 8px #ccc,0 0 9px #ccc,0 0 10px #ccc"})
+        miss_count = miss_count + 1
         $("#comboarea1").removeClass
         $("#comboarea1").css({"color":"red"}).text("MISS")
         //$("#comboarea1").css({"color":"red"}).text("MISS (You flicked "+$("#aarea").text()+")")
@@ -730,6 +774,9 @@ function timing_n(score_head){
   if(kasi[score_head][1].charAt(0)!="("){
     $("#qarea").text(kasi[score_head][1])
   }
+  else{
+    $("#qarea").text("")
+  }
   if(kasi[score_head][3]!=0){
     setTimeout(function(){colortest(kasi[score_head][3],kasi[score_head][0],score_head)},0)
 
@@ -811,7 +858,11 @@ function colortest(n,m,p) {
   $("#qbar").css({"background-color":"green","height":"5px","transform-origin":"left"})
 
   if($('#shortcut').is(':checked') && kasi[p][5] != void 0){
+    //四捨五入で[n]になったらseekする、ならこれでいい
     n=kasi[p][5]+(kasi[p][0]+kasi[p][3]-kasi[p][5])-player.getCurrentTime()
+    //score通りの時間にseekするならこっち
+    n=2.5　+ timing_bar_time
+    //console.log(player.getCurrentTime())
     //return
     //n=kasi[p][0]+kasi[p][3]-0.3-kasi[p][5]
     //console.log(player.getCurrentTime())
@@ -931,6 +982,8 @@ function type_bar_check(m){
   if(kasi_now_forbar > kasi_now){
     $("#narea").attr("style","").css({"border":"1px solid #ccc"}).text($("#narea").text().substr(1))
     kasi_now = kasi_now + 1
+    $('.button').css({'background-color':'rgba(255, 255, 255, 0.9)'})
+    $("#"+kasi_demo[kasi_now]).css({'background-color':'rgba(190, 190, 255, 0.9)'})
     //console.log(kasi_now + "delete" + player.getCurrentTime())
   }
   $("#timing_bar"+m).off('animationend webkitAnimationEnd')
@@ -1023,6 +1076,7 @@ function stageclear() {
   //スコアシステム
   clearscore=emo_ten*1+$("#ten").text()*1
   maxscore=kasi_s.length*2
+  loss_count = kasi_s.length - great_count - good_count
 
   if($('#autoplay').is(':checked')==true){$("#result1").text("AUTOPLAY END")}
   else if(clearscore/maxscore>$("#highscore"+playing).text()*1){}
@@ -1037,7 +1091,7 @@ function stageclear() {
   else if(emo_ten!=0 && clearscore/maxscore==1){$("#result1").text("Stage Clear!"),$("#result2").text("Rank S")}
   
   $("#result3").text("SCORE "+clearscore)
-  $("#result5").text("MAX COMBO "+max_combo)
+  $("#result5").html("<br>GREAT "+great_count+"<br>GOOD "+good_count+"<br>LOSS "+loss_count+"<br>MISS "+miss_count/*+"<br>FAST"+fast_count+"<br>SLOW"+slow_count*/+"<br>MAX COMBO "+max_combo)
 
   if($('#easy').is(':checked')){
     return
@@ -1048,6 +1102,11 @@ function stageclear() {
     $("#result4").text("HighScore!")
     localStorage.setItem("highrank"+playing, $("#result2").text().slice(5))
     localStorage.setItem("highscore"+playing, emo_ten*1+$("#ten").text()*1)
+    localStorage.setItem("great"+playing, great_count)
+    localStorage.setItem("good"+playing, good_count)
+    localStorage.setItem("loss"+playing, loss_count)
+    localStorage.setItem("miss"+playing, miss_count)
+    localStorage.setItem("maxcombo"+playing, max_combo)
     $("#highrank"+playing).text($("#result2").text().slice(5))
     $("#highscore"+playing).text(clearscore)
 
@@ -1216,7 +1275,6 @@ function onPlayerStateChange(event) {
     //var startTime = new Date().getTime();　//描画開始時刻を取得
     (function loop(){
         loop_playing = window.requestAnimationFrame(loop);
-
         /*
         //毎回のチェックになっちゃってるけど前奏飛ばしの設定があったら飛ばす
         if(kasi["0"] && $('#shortcut').is(':checked') && Object.keys(kasi["0"]).length>5){
@@ -1235,14 +1293,17 @@ function onPlayerStateChange(event) {
           return
         }
         */        
-        //console.log(player.getCurrentTime())
-        //console.log(player.getPlayerState())
 
         if (kasi[Math.round(player.getCurrentTime()) + timing_bar_time] && Math.round(player.getCurrentTime())  + timing_bar_time != kasi_s_count &&
         $('#shortcut').is(':checked') && kasi[String(Math.round(player.getCurrentTime() + timing_bar_time))][5] != void 0) {      
           kasi_s_count = Math.round(player.getCurrentTime()) + timing_bar_time
           act_time = kasi_s_count
-          player.seekTo(kasi[act_time][5] - timing_bar_time,true)
+          //四捨五入して[n]になったらseekしちゃう
+          //player.seekTo(kasi[act_time][5] - timing_bar_time,true)
+
+          //score通りの時間でseekする
+          setTimeout(seekfunc, (kasi[act_time][0] - player.getCurrentTime())*1000, kasi[act_time][5] - timing_bar_time,true)
+
           //setTimeout(function(){colortest(kasi[act_time][3],kasi[act_time][0],act_time)},timing_bar_time*1000)
 
           //setTimeout(colortest, (kasi[act_time][3],kasi[act_time][0],act_time, 300))
@@ -1283,6 +1344,9 @@ function onPlayerStateChange(event) {
   }
 }
 
+function seekfunc(a,b){
+  player.seekTo(a,b)
+}
 
 function stopVideo() {
   player.stopVideo();
@@ -1299,7 +1363,8 @@ function pre_musicstart(file,music,videoid) {
   pre_YoutubeAPIReady(videoid,music)
   */
   $("#blank_table").children().css({"background-color":"white"})
-  $("#border"+music).css({"background-color":"green"})  
+  $("#border"+music).css({"background-color":"green"})
+  $("#playbutton").css({"color":"black"})
 }
 
 function pre_YoutubeAPIReady(videoid) {
@@ -1330,6 +1395,7 @@ function pre_PlayerReady() {
 //STAGE SELECTをクリックしたら起動する
 function musicstart() {
   var file = now_select_music
+  if(file == void 0){return}
   var ls = file
   var videoid = now_select_videoid
   var num = 1;
@@ -1358,6 +1424,12 @@ function musicstart() {
   emo_ten=0
   combo_ten=0
   max_combo=0
+  great_count = 0
+  good_count = 0
+  miss_count = 0
+  fast_count = 0
+  slow_count = 0
+  loss_count = 0
   playing=ls
   playagain1=file
   playagain2=ls
@@ -1372,14 +1444,13 @@ function musicstart() {
   //console.log(minsecforbar)
   //console.log(minsecforbar[0].minsec)
 
-  timing_bar_time=Math.min(Math.ceil($(window).width()*0.9/(45/minsecforbar[0].minsec)),8,Math.floor(kasi_s[0])-2)
+  timing_bar_time=Math.min(Math.ceil($(window).width()*0.9/(45/minsecforbar[0].minsec)),1,Math.floor(kasi_s[0])-2)
   if($('input[name="timingflag"]:checked').val()=="fix"){timing_bar_time=0}
-  console.log(timing_bar_time + "timing_bar_time")
   //timing_bar_time = 0
   //$("#backimg").css({"background-image":"url("+file+".jpg)"})//背景画像邪魔ならコメントアウト
   //$('#backimg').css("height","100%")
   $("#qarea").text("")
-  $("#qarea_next").text("読み込み中")
+  $("#qarea_next").text("(前奏)")
   $("#narea").text("")
   $("#raw_narea").text("")
   //$("#qbar").attr("style","")

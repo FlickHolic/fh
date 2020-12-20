@@ -103,7 +103,6 @@ legend{ color:#000; }
   */
   height: 100%;
   width:100%;
-  background-color: rgba(255, 255, 255, 0.8); 
 }
 
 #flicktable {
@@ -198,7 +197,8 @@ input[type="text"]{
 input[type="checkbox"]{
   -webkit-appearance: checkbox;
   height: 25px;
-  width: 100%;
+  width: 25px;
+  vertical-align: bottom;
 }
 
 input[type="tel"],input[type="text"]{
@@ -239,6 +239,8 @@ h2,#resulttable { font-family: sans-serif;font-weight:900;font-size:15px;text-al
 label {
   font-family: sans-serif;font-weight:900;font-size:15px;text-align: center;color: #34495E;padding: 10px 10px 10px 10px;
 }
+
+
 /*フリックキーボードのデザイン*/
 #flicktable ul {
   padding: 0 91px 0 91px;
