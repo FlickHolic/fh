@@ -81,7 +81,7 @@ function clickPlay(file) {
 
 $(function(){
   $("#se_range").on("input",function(){
-    se_volume = $(this).val()
+    se_volume = ($(this).val()*1).toFixed(1)
     $("#se_range_val").text(se_volume)
     localStorage.setItem("ls_se_volume", se_volume)
     
@@ -225,6 +225,41 @@ window.onload = function() {
   });
 }
 */
+
+//タッチエフェクト
+$(function () {
+  $("body").on({'click': function(e) {
+      //パラメータ
+      var box = {
+          "width":"50",
+          "height":"50"
+      };
+      //クリックした座標
+      var x = e.pageX;
+      var y = e.pageY;
+      var style = {
+          "position":"absolute",
+          "top":y,
+          "left":x,
+          "z-index":100,
+          "border":"solid",
+          "border-radius":box.width/2
+      };
+      $(this).append('<div class="circle"></div>');
+      $(this).find(".circle:last").css(style).animate({
+          "width":box.width,
+          "height":box.height,
+          "top":(y - box.height/2),
+          "left":(x - box.width/2),
+      },{
+          "duration": 300,
+          "queue":false,
+      }).fadeOut(500,function(){
+          $(this).remove();
+      });
+  }});
+});
+
 
 
 //Android ChromeはaudioのcurrentTimeがおかしいのかsettimeoutがおかしいのか、両方がおかしいのか
@@ -470,12 +505,16 @@ $(function(){
       //判定に使うcurrentTime
       judge_time=player.getCurrentTime()
     }
-      //デバッグ用 touchendしたcurrentTime
+
+    //デバッグ用 touchendしたcurrentTime
+    //入力した文字をHTMLに非表示で表示しておく
     if(startbutton!=""){
       if(endX<$(startbutton).offset().left || endX>$(startbutton).offset().left*1+$(startbutton).width() || endY<$(startbutton).offset().top || endY>$(startbutton).offset().top*1+$(startbutton).width()){
         kakudo=Math.atan2(startX-endX,startY-endY)/(Math.PI/180)
         if(map[$(startbutton).attr("id")].charAt(1)!="無"){
-          if(kakudo>44 && kakudo<135){$("#aarea").text(map[$(startbutton).attr("id")].charAt(1))}
+          if(kakudo>44 && kakudo<135){
+            $("#aarea").text(map[$(startbutton).attr("id")].charAt(1))
+          }
         }
         if(map[$(startbutton).attr("id")].charAt(2)!="無"){
           if(kakudo>-46 && kakudo<45){$("#aarea").text(map[$(startbutton).attr("id")].charAt(2))}
@@ -487,11 +526,14 @@ $(function(){
           if(kakudo>134 || kakudo<-145){$("#aarea").text(map[$(startbutton).attr("id")].charAt(4))}
         }
       }
+      //A音の場合
       else{$("#aarea").text(map[$(startbutton).attr("id")].charAt(0))}
-      if(($('#easy').is(':checked') && $(startbutton).attr("id") == kasi_demo[kasi_now]) || ($("#aarea").text()===$("#narea").text().charAt(0))){
 
-       
+      //入力した文字が左端の文字と一致していたら
+      //修正前　if(($('#easy').is(':checked') && $(startbutton).attr("id") == kasi_demo[kasi_now]) || ($("#aarea").text()===$("#narea").text().charAt(0))){
+      if(($('#easy').is(':checked') && $.inArray($("#narea").text().charAt(0),map[$(startbutton).attr("id")]) != -1) || ($("#aarea").text()===$("#narea").text().charAt(0))){
 
+        //正解なら左端の文字を消す
         $("#narea").attr("style","").css({"border":"1px solid #ccc"}).text($("#narea").text().substr(1))
         $("#qarea").attr("style","")
 
@@ -581,6 +623,48 @@ $(function(){
           setTimeout(colortest3,0)
         }
       }
+      //BARモードの時、タイミングが合っていて次の文字と同じだったら
+      //ここデバッグしてない！
+      else if($('input[name="timingflag"]:checked').val()=="bar" && (($('#easy').is(':checked') && $.inArray($("#narea").text().charAt(1),map[$(startbutton).attr("id")]) != -1) || $("#aarea").text()===$("#narea").text().charAt(1))){
+        //通常猶予3.0のところ、1.5の誤差で次の文字を入力したら
+        if(Math.abs(kasi_s[kasi_now+1]-judge_time)<0.15 || Math.abs(kasi_s[kasi_now+1]-starttime)<0.15){
+          //正解なら左端の文字を消す
+          $("#narea").attr("style","").css({"border":"1px solid #ccc"}).text($("#narea").text().substr(1).substr(1))
+          $("#qarea").attr("style","")
+
+          combo_ten=0
+          $("#combo1").text("")
+          //エモーショナル点数
+          //押したタイミングか、もしくは離したタイミングが指定の秒数以内ならGREAT
+          clickPlay("great.mp3")
+          emo_ten=emo_ten+1
+          
+          combo_ten=combo_ten+1
+          if(max_combo<combo_ten){max_combo=combo_ten}
+          if(Math.abs(kasi_s[kasi_now]-judge_time)<kasi_emotime){
+            $("#combo1").css("color","blue").text(Math.round((kasi_s[kasi_now]-judge_time)*1000)/1000)
+          }
+          else{$("#combo1").css("color","blue").text(Math.round((kasi_s[kasi_now]-starttime)*1000)/1000)}
+          $("#narea").attr("style","")
+          setTimeout(colortest12,0)
+          great_count = great_count + 1
+          $("#comboarea1").css({"animation":"","color":"gray"}).text("GREAT "+combo_ten)
+           
+          setTimeout(colortest13,0)
+
+
+          kasi_now=kasi_now+1+1
+          
+          $("#ten").text($("#ten").text()*1+1)
+          //スコアシステムが変わったらここも変えること！clearscore/maxscore
+          $("#ten2").text("SCORE:"+(emo_ten*1+$("#ten").text()*1))
+          //全部入力し終わったら
+          if($("#narea").text()==""){
+            $("#narea").attr("style","")
+            setTimeout(colortest3,0)
+          }
+        }
+      }
       else if($("#narea").text()!=""){
         clickPlay("miss.mp3")
         $("#narea").attr("style","")
@@ -589,9 +673,7 @@ $(function(){
         miss_count = miss_count + 1
         $("#comboarea1").removeClass
         $("#comboarea1").css({"color":"red"}).text("MISS")
-        //$("#comboarea1").css({"color":"red"}).text("MISS (You flicked "+$("#aarea").text()+")")
         $("#combo1").text("")
-        //setTimeout(comboclear,500)
         setTimeout(colortest2,0)
       }
       $("#aarea").text("空")
@@ -977,6 +1059,7 @@ function colortest7_1(n,m,l) {
   //console.log($("#timing_bar"+m).height(),$("#timing_bar"+m).innerHeight())
 }
 
+//BARモードの時、0.3秒後に左端の文字を消す
 function type_bar_check(m){
   kasi_now_forbar = kasi_now_forbar + 1
   if(kasi_now_forbar > kasi_now){
@@ -984,6 +1067,7 @@ function type_bar_check(m){
     kasi_now = kasi_now + 1
     $('.button').css({'background-color':'rgba(255, 255, 255, 0.9)'})
     $("#"+kasi_demo[kasi_now]).css({'background-color':'rgba(190, 190, 255, 0.9)'})
+    $("#comboarea1").css({"color":"gray"}).text("LOSS")
     //console.log(kasi_now + "delete" + player.getCurrentTime())
   }
   $("#timing_bar"+m).off('animationend webkitAnimationEnd')
@@ -1541,3 +1625,4 @@ function musicstart() {
 function ctlog(){
   console.log(player.getCurrentTime())
 }
+
