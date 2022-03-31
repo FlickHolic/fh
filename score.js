@@ -35,9 +35,11 @@ var now_select_videoid
 
 var se_volume = 1
 
-
+//colortesttimer0~80
+//colortesttimer_10~80
 
 var music_list = [
+
   {
     music:"shiningstar",
     url:"Qd01-6xVSHk",
@@ -81,6 +83,10 @@ var music_list = [
 
 //beatinangel['2']=[2,'(前奏)',16.981,0.3]
 //タイトル[開始秒（整数）]=[開始秒,表示メッセージ,表示時間,判定秒数,（スキップ先秒）,（スキップ表示時間）]
+
+
+
+
 
 
 

@@ -1,5 +1,4 @@
 
-
 //Youtube API呼び出し
 var tag = document.createElement('script');
 
@@ -65,6 +64,8 @@ window.addEventListener('load', function() {
 })
 */
 
+
+/*20211024まで
 window.addEventListener('load', function() {
   window.AudioContext = window.AudioContext || window.webkitAudioContext;
   context = new AudioContext();
@@ -79,6 +80,129 @@ function clickPlay(file) {
   request.send();  
 };
 
+//呼び出したfileを再生する
+function completeOnLoad() {
+
+  //var gainNode = context.createGain()
+  //gainNode.gain.value = se_volume
+  //gainNode.connect(context.destination)
+
+  source = context.createBufferSource();
+  context.decodeAudioData(request.response, function (evt) {
+    source.buffer = evt;
+    source.connect(gain)
+    source.loop = false;
+    //source.connect(context.destination);
+    
+    //source.connect(gainNode)
+    
+    source.start(0);
+  });
+}
+*/
+
+/*とりあえず音は出るけどノイズが乗る
+var request
+var source
+//指定したfile名を鳴らすために呼び出す（効果音）
+function clickPlay(file) {
+  window.AudioContext = window.AudioContext || window.webkitAudioContext;
+  context = new AudioContext();
+  context.sampleRate = 48000;
+  //console.log(context.sampleRate)
+  context.createBufferSource().start(0);
+
+  request = new XMLHttpRequest();
+  request.open("GET", file, true);
+  request.responseType = "arraybuffer";
+  request.onload = completeOnLoad;
+  request.send();
+  //source.disconnect();
+  //context.close();
+};
+
+//呼び出したfileを再生する
+function completeOnLoad() {
+  // オーディオをデコード
+  context.decodeAudioData(request.response, function (buf) {
+    if(source) {
+      source.disconnect();
+      source.buffer = null;
+    }
+    source = context.createBufferSource();
+    source.buffer = buf;
+    source.loop = false;
+    source.connect(context.destination);
+    source.start(0);
+  });
+}
+*/
+
+/*BufferLoader.jsをつかってみる*/
+var seArray = []
+var context
+var bufferLoader
+var sebufferList
+var bufferList
+function se_init(){
+  window.AudioContext = window.AudioContext||window.webkitAudioContext;
+  context = new AudioContext();
+
+  bufferLoader = new BufferLoader(
+    context,
+    [
+      'great.mp3',
+      'good.mp3',
+      'miss.mp3'
+    ],
+    finishedLoading
+    );
+  bufferLoader.load();
+}
+function finishedLoading(bufferList) {
+
+  for( var i = 0; i < bufferList.length ; i++ ) {
+    var source = context.createBufferSource();
+    source.buffer = bufferList[i];
+    source.connect(context.destination);
+    seArray.push(source);
+  }
+  sebufferList=Array.from(bufferList)
+  console.log(bufferList)
+  console.log(sebufferList)
+  
+}
+function playsound(sename){
+  //console.log(bufferList)
+  //console.log(sebufferList)
+  seArray[sename].start(0);
+  seArray[sename] = context.createBufferSource();
+  //seArray[sename].buffer = bufferList[sename];
+  seArray[sename].buffer = sebufferList[sename];
+  //seArray[sename].buffer = seArray[sename];
+  seArray[sename].connect(context.destination);
+  console.log(sebufferList)
+}
+
+
+
+/*
+//呼び出したfileを再生する
+function completeOnLoad2() {
+
+  source = contextgreat.createBufferSource();
+
+  // オーディオをデコード
+  contextgreat.decodeAudioData(request.response, function (buf) {
+    source.buffer = buf;
+    source.loop = false;
+    source.connect(contextgreat.destination);
+    source.start(0);
+  });
+  console.log("completOnload2 is loaded")
+}
+*/
+
 $(function(){
   $("#se_range").on("input",function(){
     se_volume = ($(this).val()*1).toFixed(1)
@@ -88,27 +212,104 @@ $(function(){
   })
 })
 
+/**/
 
-//呼び出したfileを再生する
-function completeOnLoad() {
+/*
+const url = 'great.mp3';
 
-  var gainNode = context.createGain()
-  gainNode.gain.value = se_volume
-  gainNode.connect(context.destination)
+let audioSource = null;
 
-  source = context.createBufferSource();
-  context.decodeAudioData(request.response, function (buf) {
-    source.buffer = buf;
-    source.loop = false;
-    //source.connect(context.destination);
-
-    
-    source.connect(gainNode)
-    
-    
-    source.start();
-  });
+function playsound(){
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  const ctx = new AudioContext();
+  const request = new XMLHttpRequest();
+  request.open('GET', url, true);
+  request.responseType = 'arraybuffer';
+  request.onload =  () => {
+    ctx.decodeAudioData(request.response, (audioBuffer) => {
+      if(audioSource) {
+        //audioSource.disconnect();
+        //audioSource.buffer = null;
+      }
+      
+      audioSource = ctx.createBufferSource();
+      audioSource.buffer = audioBuffer;
+      audioSource.connect(ctx.destination);
+      audioSource.start();
+    });
+  }
+  request.send();
 }
+
+function loadsound(){
+  playsound()
+
+  console.log("sound loaded")
+}
+*/
+/*
+
+const SOUNDS = ["great.mp3", "good.mp3", "miss.mp3"]
+var myAudioContext
+var myBuffers = {}
+
+function buffer_sound(event) 
+{
+    var request = event.target;
+    var buffer = myAudioContext.createBuffer(request.response, false);
+    myBuffers[request._sound_name] = buffer;
+}
+
+function setup_sounds()
+{
+
+	var request = new XMLHttpRequest();
+    for (var i = 0, len = SOUNDS.length; i < len; i++) 
+    {
+        request = new XMLHttpRequest();
+        request._sound_name = SOUNDS[i];
+        request.open('GET', request._sound_name, true);
+        request.responseType = 'arraybuffer';
+        request.addEventListener('load', buffer_sound, false);
+        request.send();
+    }
+}
+
+function setup_web_audio_api()
+{
+	if('webkitAudioContext' in window)
+	{
+    	myAudioContext = new webkitAudioContext();
+	}
+
+	setup_sounds();
+}
+
+function play_great()
+{
+	var source = myAudioContext.createBufferSource();
+	source.buffer = myBuffers['great.mp3'];
+	source.connect(myAudioContext.destination);
+	source.noteOn(0);
+
+}
+
+function play_good()
+{
+	var source = myAudioContext.createBufferSource();
+	source.buffer = myBuffers['good.mp3'];
+	source.connect(myAudioContext.destination);
+	source.noteOn(0);
+}
+
+function playgreat(){
+  great.currentTime=0
+  great.play()
+  //console.log(great.currentTime)
+
+}
+*/
+
 
 /*
 function completeOnLoad() {
@@ -260,8 +461,6 @@ $(function () {
   }});
 });
 
-
-
 //Android ChromeはaudioのcurrentTimeがおかしいのかsettimeoutがおかしいのか、両方がおかしいのか
 //歌詞表示・判定部分を書き換えないといけない
 //Android Friefoxは3分くらいでズレがでてくる→どこかでcurrentTimeを補正すると直る
@@ -352,7 +551,6 @@ function getLen(str){
   //結果を返す
   return result;
 };
-
 
 //music_list配列の数だけ選曲テーブルを作成する
 function make_stagetable(){
@@ -533,6 +731,7 @@ $(function(){
       //修正前　if(($('#easy').is(':checked') && $(startbutton).attr("id") == kasi_demo[kasi_now]) || ($("#aarea").text()===$("#narea").text().charAt(0))){
       if(($('#easy').is(':checked') && $.inArray($("#narea").text().charAt(0),map[$(startbutton).attr("id")]) != -1) || ($("#aarea").text()===$("#narea").text().charAt(0))){
 
+        console.log(player.getCurrentTime())
         //正解なら左端の文字を消す
         $("#narea").attr("style","").css({"border":"1px solid #ccc"}).text($("#narea").text().substr(1))
         $("#qarea").attr("style","")
@@ -540,7 +739,12 @@ $(function(){
         //エモーショナル点数
         //押したタイミングか、もしくは離したタイミングが指定の秒数以内ならGREAT
         if(Math.abs(kasi_s[kasi_now]-judge_time)<kasi_emotime || Math.abs(kasi_s[kasi_now]-starttime)<kasi_emotime){
-          clickPlay("great.mp3")
+          
+          //clickPlay("great.mp3")
+          playsound(0)
+          //playgreat()
+          //playsound()
+          //play_great()
           emo_ten=emo_ten+1
           
           combo_ten=combo_ten+1
@@ -585,7 +789,8 @@ $(function(){
             //$("#combo1").text("BAD")
             //setTimeout(comboclear,500)
             //$("#combo1").css({"color":"pink","text-shadow":"0 0 1px #fff,0 0 2px #fff,0 0 3px #fff,0 0 4px #ff00de,0 0 7px #ff00de,0 0 8px #ff00de,0 0 9px #ff00de,0 0 10px #ff00de"})
-            clickPlay("good.mp3")
+            //clickPlay("good.mp3")
+            playsound(1)
             $("#combo1").css("color","black").text(Math.round((kasi_s[kasi_now]-judge_time)*1000)/1000)
           $("#narea").attr("style","")
           good_count = good_count + 1
@@ -636,7 +841,12 @@ $(function(){
           $("#combo1").text("")
           //エモーショナル点数
           //押したタイミングか、もしくは離したタイミングが指定の秒数以内ならGREAT
-          clickPlay("great.mp3")
+          
+          //clickPlay("great.mp3")
+          playsound(0)
+          //playgreat()
+          //playsound()
+          //play_great()
           emo_ten=emo_ten+1
           
           combo_ten=combo_ten+1
@@ -652,7 +862,6 @@ $(function(){
            
           setTimeout(colortest13,0)
 
-
           kasi_now=kasi_now+1+1
           
           $("#ten").text($("#ten").text()*1+1)
@@ -666,7 +875,8 @@ $(function(){
         }
       }
       else if($("#narea").text()!=""){
-        clickPlay("miss.mp3")
+        //clickPlay("miss.mp3")
+        playsound(2)
         $("#narea").attr("style","")
         combo_ten=0
         //$("#combo1").css({"color":"gray","text-shadow":"0 0 1px #fff,0 0 2px #fff,0 0 3px #fff,0 0 4px #ccc,0 0 7px #ccc,0 0 8px #ccc,0 0 9px #ccc,0 0 10px #ccc"})
@@ -720,13 +930,20 @@ function timing_bar_start(score_head){
         if(kasi_demo!="" && $('#autoplay').is(':checked') && kasi[score_head][1]!="end"){
           setTimeout(function(v){demo(v)},(kasi_s[mozi_time_now2]-player.getCurrentTime()-0.1)*1000,kasi_demo[mozi_time_now2])
         }
-        if(mozi_time_num2>80){mozi_time_num2=0}
+        if(mozi_time_num2>80){mozi_time_num2=1}
         //本当はkasi_emotimeを引いた時間からsetTimeoutを実行するのがいいんだけど曲によってはズレが大きいので一律で0.2にしておく
           if(i==0){
+            //back後即復帰では発火していない
+            //console.log("_blank")
+            if(kasi_s[mozi_time_now2]<-timing_bar_time){player.pauseVideo()}
             setTimeout(function(x,y,z){colortest7_1(x,y,z)},(kasi_s[mozi_time_now2]-player.getCurrentTime()-timing_bar_time-0.1)*1000,kasi[score_head][2][i],mozi_time_num2,kasi_s[mozi_time_now2])
+            //eval("colortesttimer_1"+i+"=setTimeout(function(x,y,z){colortest7_1(x,y,z)},(kasi_s[mozi_time_now2]-player.getCurrentTime()-timing_bar_time-0.1)*1000,kasi[score_head][2][i],mozi_time_num2,kasi_s[mozi_time_now2])")
           }
           else{
+            //back後即復帰では発火していない
+            //console.log("_1")
             setTimeout(function(x,y,z){colortest7(x,y,z)},(kasi_s[mozi_time_now2]-player.getCurrentTime()-timing_bar_time-0.1)*1000,kasi[score_head][2][i],mozi_time_num2,kasi_s[mozi_time_now2])
+            //eval("colortesttimer"+i+"=setTimeout(function(x,y,z){colortest7(x,y,z)},(kasi_s[mozi_time_now2]-player.getCurrentTime()-timing_bar_time-0.1)*1000,kasi[score_head][2][i],mozi_time_num2,kasi_s[mozi_time_now2])")
           }
           setTimeout(function(y){colortest8(y)},1,mozi_time_num2)
         mozi_time_num2=mozi_time_num2+1
@@ -756,7 +973,7 @@ function timing_bar_start(score_head){
         if(kasi_demo!="" && $('#autoplay').is(':checked') && kasi[score_head][1]!="end"){
           setTimeout(function(v){demo(v)},(kasi_s[mozi_time_now2]-player.getCurrentTime()-0.1)*1000,kasi_demo[mozi_time_now2])
         }
-        if(mozi_time_num2>80){mozi_time_num2=0}
+        if(mozi_time_num2>80){mozi_time_num2=1}
         mm=((kasi_s[mozi_time_now2]-kasi[score_head][0])/kasi[score_head][3])*100
         if(i===0){$("#timing_bar"+i).css({"width":mm+"%","border-left":"5px solid black","right":"5px"})}
         else{$("#timing_bar"+i).css({"width":mm+"%","border-left":"5px solid green","right":"5px"})}
@@ -766,7 +983,6 @@ function timing_bar_start(score_head){
     }
   }
 }
-
 
 function demo(v){
   var demoremovetimer
@@ -867,7 +1083,11 @@ function timing_n(score_head){
     }
   }
   //入力ひらがな問題文を表示する（×1）（undefinedだから実行されてないだけ？）
-  $("#narea").text(kasi[score_head][2])
+  var remainmoji = $("#narea").text().slice(-1).length
+
+  //console.log(remainmoji)
+  $("#narea").text($("#narea").text().slice(-1)+kasi[score_head][2])
+  //console.log(player.getCurrentTime())
 
   //点数表示
   if(kasi[score_head][1]!="end"){
@@ -877,7 +1097,7 @@ function timing_n(score_head){
       $("#comboarea1").text("")
       $("#combo1").text("")
       //今打つべき歌詞文字数をkasi_nowグローバル変数で保持
-      kasi_now=$("#max_ten").text()-kasi[score_head][2].length
+      kasi_now=$("#max_ten").text()-kasi[score_head][2].length - remainmoji
       $('.button').css({'background-color':'rgba(255, 255, 255, 0.9)'})
       $("#"+kasi_demo[kasi_now]).css({'background-color':'rgba(190, 190, 255, 0.9)'})
     }
@@ -943,11 +1163,12 @@ function colortest(n,m,p) {
     //四捨五入で[n]になったらseekする、ならこれでいい
     n=kasi[p][5]+(kasi[p][0]+kasi[p][3]-kasi[p][5])-player.getCurrentTime()
     //score通りの時間にseekするならこっち
-    n=2.5　+ timing_bar_time
+    n=2.5 + timing_bar_time
+    //0.3を0.1に変えてみる
+    n=(kasi[Math.floor(Math.round(kasi[p][0]+kasi[p][3])-0.1)][0]-kasi[p][5]) + timing_bar_time
     //console.log(player.getCurrentTime())
     //return
     //n=kasi[p][0]+kasi[p][3]-0.3-kasi[p][5]
-    //console.log(player.getCurrentTime())
   }
   else{
     n=n-(player.getCurrentTime()-m)
@@ -958,8 +1179,6 @@ function colortest(n,m,p) {
     easing:"linear"
   })
 }
-
-
 
 function fixbar_anime(n,m,p) {
   $("#fixbar").css({"transform":"none","transition":"none"})
@@ -1016,6 +1235,14 @@ function colortest6(m) {
 }
 
 function colortest7(n,m,l) {
+  player.playVideo()
+  //console.log(n,m,l,player.getCurrentTime()+" colortest7",mozi_time_num2+" mtnum2")
+  //mozi_time_num2が0なのは最初の一文字だけ　以降は1から80の連番
+  if(mozi_time_num2 == 0){
+    console.log("歌詞表示スキップ")
+    return
+  }
+  
   var bartime=l-player.getCurrentTime()
   $("#timing_bar"+m).css({
     "-moz-animation":"timing1 "+bartime+"s linear",
@@ -1037,6 +1264,12 @@ function colortest7(n,m,l) {
 }
 
 function colortest7_1(n,m,l) {
+  //console.log(n,m,l,player.getCurrentTime()+" colortest7_1",mozi_time_num2+" mtnum2_1")
+  if(mozi_time_num2 == 0){
+    console.log("歌詞表示スキップ")
+    return
+  }
+  
   eval("var kasi_now_bar" + m + " = " + kasi_now)
   var bartime=l-player.getCurrentTime()
   $("#timing_bar"+m).css({
@@ -1056,7 +1289,6 @@ function colortest7_1(n,m,l) {
       type_bar_check(m)
     },300)
   })
-  //console.log($("#timing_bar"+m).height(),$("#timing_bar"+m).innerHeight())
 }
 
 //BARモードの時、0.3秒後に左端の文字を消す
@@ -1068,7 +1300,6 @@ function type_bar_check(m){
     $('.button').css({'background-color':'rgba(255, 255, 255, 0.9)'})
     $("#"+kasi_demo[kasi_now]).css({'background-color':'rgba(190, 190, 255, 0.9)'})
     $("#comboarea1").css({"color":"gray"}).text("LOSS")
-    //console.log(kasi_now + "delete" + player.getCurrentTime())
   }
   $("#timing_bar"+m).off('animationend webkitAnimationEnd')
 }
@@ -1111,7 +1342,6 @@ function changetab(num) {
   if(player != void 0){
     if(player.getCurrentTime()!=0 && test!=""){
       player.pauseVideo()
-      //player.getCurrentTime()=0
       player.seekTo(0,true)
     }
   }
@@ -1202,10 +1432,15 @@ function stageclear() {
     else if($("#highscore"+playing).text()/maxscore<1){$("#star"+playing).removeClass().addClass("fa fa-star")}
     else if(emo_ten!=0 && $("#highscore"+playing).text()/maxscore==1){$("#star"+playing).removeClass().addClass("fa fa-trophy")}
   }
+
+  var sT_timing_bar_start
+  clearTimeout(sT_timing_bar_start)
+  var sT_timing
+  clearTimeout(sT_timing)
+  var st_timing_n
+  clearTimeout(sT_timing_n)
   
 }
-
-
 
 function editstart() {
   var num = 4;
@@ -1353,9 +1588,20 @@ function playconfirm(){
   }
 }
 
+//動画が開始されたら実行する
 function onPlayerStateChange(event) {
   if (event.data == YT.PlayerState.PLAYING) {
-
+    console.log(player.getCurrentTime())
+    console.log(kasi_s_count)
+    console.log(Math.round(player.getCurrentTime()))
+    //イントロドンの時の対応
+    if (kasi['0'] && Math.round(player.getCurrentTime()) != kasi_s_count &&
+          $('input[name="timingflag"]:checked').val() != "none") {
+      kasi_s_count = Math.round(player.getCurrentTime())
+      act_time = kasi_s_count
+      var sT_timing_bar_start = setTimeout(timing_bar_start, (kasi[act_time][0] - player.getCurrentTime()) * 1000, act_time)
+      console.log("timing_bar_start "+act_time+" "+timing_bar_time)
+    }
     //var startTime = new Date().getTime();　//描画開始時刻を取得
     (function loop(){
         loop_playing = window.requestAnimationFrame(loop);
@@ -1378,6 +1624,7 @@ function onPlayerStateChange(event) {
         }
         */        
 
+        //ショートカットする
         if (kasi[Math.round(player.getCurrentTime()) + timing_bar_time] && Math.round(player.getCurrentTime())  + timing_bar_time != kasi_s_count &&
         $('#shortcut').is(':checked') && kasi[String(Math.round(player.getCurrentTime() + timing_bar_time))][5] != void 0) {      
           kasi_s_count = Math.round(player.getCurrentTime()) + timing_bar_time
@@ -1394,33 +1641,38 @@ function onPlayerStateChange(event) {
           //colortest(kasi[act_time][3],kasi[act_time][0],act_time)
           return
         }
+        console.log(player.getCurrentTime())
 
-
+        
 
         //各種タイミング表示関数を実行するsetTimeout
         if (kasi[Math.round(player.getCurrentTime()) + timing_bar_time] && Math.round(player.getCurrentTime()) + timing_bar_time != kasi_s_count &&
               $('input[name="timingflag"]:checked').val() != "none") {
           kasi_s_count = Math.round(player.getCurrentTime()) + timing_bar_time
           act_time = kasi_s_count
-          setTimeout(timing_bar_start, (kasi[act_time][0] - timing_bar_time - player.getCurrentTime()) * 1000, act_time)
+          //setTimeout(timing_bar_start, (kasi[act_time][0] - timing_bar_time - player.getCurrentTime()) * 1000, act_time)
+          var sT_timing_bar_start = setTimeout(timing_bar_start, (kasi[act_time][0] - timing_bar_time - player.getCurrentTime()) * 1000, act_time)
+          console.log("timing_bar_start "+act_time+" "+timing_bar_time)
         }
         //次歌詞表示関数を実行するsetTimeout
         if (kasi[Math.round(player.getCurrentTime()) + 2] && Math.round(player.getCurrentTime()) + 2 != kasi_count) {
           kasi_count = Math.round(player.getCurrentTime()) + 2
           act_time = kasi_count
-          setTimeout(timing, (kasi[act_time][0] - 2 - player.getCurrentTime()) * 1000, act_time)
+          //setTimeout(timing, (kasi[act_time][0] - 2 - player.getCurrentTime()) * 1000, act_time)
+          var sT_timing = setTimeout(timing, (kasi[act_time][0] - 2 - player.getCurrentTime()) * 1000, act_time)
+          console.log("timing "+act_time)
         }
         //今歌詞と今ひらがな歌詞表示関数を実行するsettimeout
         if (kasi[Math.ceil(player.getCurrentTime())] && Math.ceil(player.getCurrentTime()) != kasi_n_count) {
           kasi_n_count = Math.ceil(player.getCurrentTime())
           act_time_n = kasi_n_count
-          setTimeout(timing_n, (kasi[act_time_n][0] - player.getCurrentTime()) * 1000, act_time_n)
+          //setTimeout(timing_n, (kasi[act_time_n][0] - player.getCurrentTime()) * 1000, act_time_n)
+          var st_timing_n = setTimeout(timing_n, (kasi[act_time_n][0] - player.getCurrentTime()) * 1000, act_time_n)
+          console.log("timing_n "+act_time_n)
         }
-
         if(player.getPlayerState() != 1){
           window.cancelAnimationFrame(loop_playing)
         }
-        
     })();
   }
   else if (player.getPlayerState() == 0 || event.data == YT.PlayerState.ENDED || event.data == YT.PlayerState.PAUSED) {
@@ -1430,12 +1682,12 @@ function onPlayerStateChange(event) {
 
 function seekfunc(a,b){
   player.seekTo(a,b)
+  //console.log(player.getCurrentTime()+":seekfunc a to")
 }
 
 function stopVideo() {
   player.stopVideo();
 }
-
 
 function pre_musicstart(file,music,videoid) {
   now_select_music = music
@@ -1502,7 +1754,7 @@ function musicstart() {
   //次歌詞を表示するためのkasi配列の番号
   kasi_count=0
   //各種タイミングを表示するためのkasi配列の番号
-  kasi_s_count=0
+  kasi_s_count="a"
   //今歌詞を表示するためのkasi配列の番号
   kasi_n_count=0
   emo_ten=0
@@ -1551,7 +1803,7 @@ function musicstart() {
   $("#ten2").text("")
   $("#result4").html("")
   $("#result10").html("")
-  $(".timing_bar").attr("style","")
+  //$(".timing_bar").removeAttr("style")
   $(".button").css({'background-color':'rgba(255, 255, 255, 0.9)'})
   $("#"+kasi_demo[kasi_now]).css({'background-color':'rgba(190, 190, 255, 0.9)'})
   //$("#fixbar").attr("style","")
@@ -1561,8 +1813,18 @@ function musicstart() {
   //$(".timing_bar").css("-moz-animation","none").css("-webkit-animation","none").css("animation","none")
   $('#timingstop').css("border-color","blue")
   for(var i=0;i<81;i++){
-    $("#timing_bar"+i).off('animationend webkitAnimationEnd').text("").css("-webkit-animation","none").css("-moz-animation","none").css("animation","none")
+    $("#timing_bar"+i).off('animationend webkitAnimationEnd').text("").css("-webkit-animation","none").css("-moz-animation","none").css("animation","none").attr("style","")
+    /*
+    eval("colortesttimer"+i+"=0")
+    eval("colortesttimer_1"+i+"=0")
+    eval("console.log(colortesttimer_1"+i+")")
+    eval("clearTimeout(colortesttimer"+i+")")
+    eval("clearTimeout(colortesttimer_1"+i+")")
+    */
+
+    //console.log($("#timing_bar"+i).text())
   }
+
 
   if($('input[name="mojiflag"]:checked').val()=="none"){
     $('#a').css("color","rgba(255,255,255,0)")
@@ -1609,15 +1871,14 @@ function musicstart() {
         $('#fixbar').hide()
   }
 
-  start()
+  //start()
   target=$("#qarea_next").offset().top-2
-  
   
   if(player != void 0){
     player.destroy()
   }
   
- 
+  //youtubeを再生する
   onYouTubeIframeAPIReady(videoid)
   //console.log(window.outerWidth)
 }
